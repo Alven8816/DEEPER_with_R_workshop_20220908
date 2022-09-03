@@ -54,7 +54,7 @@ Location: 553 St Kilda Road, Melbourne.
 
 - <a href="https://github.com/Alven8816/deeper">S1 Presentation slides</a>
 
-- <a href="https://github.com/Alven8816/deeper">S2 Tutorial</a>
+- <a href="https://alven8816.github.io/DEEPER_with_R_workshop_20220908/">S2 Tutorial</a>
 
 ### Support or Contact
 
