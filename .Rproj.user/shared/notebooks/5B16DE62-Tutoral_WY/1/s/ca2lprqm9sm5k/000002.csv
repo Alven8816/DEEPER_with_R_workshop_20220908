@@ -1,0 +1,47 @@
+"0","start_time <- Sys.time()
+
+ranger_mtry_7 <-
+  tuningModel(basemodel  = 'SL.ranger',
+              params = list(mtry = 7))
+
+model_challenge2 <- predictModel(
+  Y = trainset_syd[, dependence],
+  X = trainset_syd[, independence],
+  base_model = c(ranger_mtry_7, ""SL.xgboost""),
+  cvControl = list(V = 5)
+)
+"
+"1","
+
+The base models Cross validation result:
+
+"
+"1","      "
+"1"," SL.ranger_1_All"
+"1"," SL.xgboost_All"
+"1","
+weight"
+"1","       0.2047244"
+"1","      0.7952756"
+"1","
+R2    "
+"1","       0.8270948"
+"1","      0.8535306"
+"1","
+RMSE  "
+"1","       1.4047857"
+"1","      1.2838283"
+"1","
+"
+"0","end_time <- Sys.time()"
+"0","end_time - start_time"
+"1","Time difference of "
+"1",""
+"1","6.297633"
+"1",""
+"1"," "
+"1",""
+"1","secs"
+"1",""
+"1","
+"

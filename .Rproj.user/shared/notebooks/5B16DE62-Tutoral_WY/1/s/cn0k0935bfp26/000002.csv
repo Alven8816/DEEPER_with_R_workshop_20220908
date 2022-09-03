@@ -1,0 +1,17 @@
+"0","print(apply(
+  X = pred_model1$pre_base$library.predict,
+  MARGIN = 2,
+  FUN = caret::R2,
+  obs = testset[, y]
+))
+"
+"1","SL.ranger_1_All "
+"1","SL.ranger_2_All "
+"1","SL.ranger_3_All "
+"1","
+"
+"1","      0.7843890 "
+"1","      0.8562903 "
+"1","      0.8780889 "
+"1","
+"
