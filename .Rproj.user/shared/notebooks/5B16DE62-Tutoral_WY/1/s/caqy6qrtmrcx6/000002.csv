@@ -1,2 +1,0 @@
-"0","y <- c(""PM2.5"")"
-"0","x <- colnames(envir_example[-c(1, 6)]) # except ""date"" and ""PM2.5"""

@@ -1,26 +1,26 @@
 {
     "id": "BBBE59A6",
-    "path": "C:/Users/yuwen/OneDrive - Monash University/2021 work/workshops/20220908 DEEPER workshop/talk materials/DEEPER_with_R_workshop_20220908/README.md",
-    "project_path": "README.md",
+    "path": "C:/Users/yuwen/OneDrive - Monash University/2021 work/workshops/20220908 DEEPER workshop/talk materials/README.md",
+    "project_path": null,
     "type": "markdown",
     "hash": "2405199537",
     "contents": "",
-    "dirty": true,
+    "dirty": false,
     "created": 1662190296437.0,
     "source_on_save": false,
     "relative_order": 1,
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "3,0",
-        "scrollLine": "0"
+        "cursorPosition": "52,0",
+        "scrollLine": "49"
     },
     "folds": "",
-    "lastKnownWriteTime": 1662205539,
+    "lastKnownWriteTime": 1662210665,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1662205539,
+    "last_content_update": 1662210665527,
     "read_only": false,
     "read_only_alternatives": []
 }

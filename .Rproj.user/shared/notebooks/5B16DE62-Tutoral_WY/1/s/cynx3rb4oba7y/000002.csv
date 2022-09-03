@@ -1,6 +1,0 @@
-"0","ranger <-"
-"0","  tuningModel("
-"0","    basemodel  = 'SL.ranger',"
-"0","    params = list(num.trees = 100),"
-"0","    tune = list(mtry = c(1, 3, 7))"
-"0","  )"

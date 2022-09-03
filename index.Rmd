@@ -1,0 +1,491 @@
+---
+title: "Deep ensemble machine learning (DEML) for estimating environmental exposure - Session 2"
+author: "Wenhua(Alven) Yu "
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    mathjax: null
+    css: assets/html_font.css
+---
+
+<style type="text/css">
+div.main-container {
+  max-width: 1600px !important;
+}
+</style>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+```
+
+
+# R package 'deeper' install
+
+Before installation, please make sure:
+
+-   using R (\>= 3.5.0)
+
+-   installed certain dependent R packages: devtools, SuperLearner(\>= 2.0-28)
+
+-   installed other suggested R packages depend on what ML model would be used, eg. ranger, gbm, xgboost, gam et al.
+
+
+The developing version of deeper can be found from [github](https://github.com/Alven8816/deeper).
+
+Using the following syntax to install:
+
+``` {.r}
+library(devtools)
+install_github("Alven8816/deeper")
+```
+
+## Activity
+
+Install deeper R package.
+
+# The advantage of DEML
+
+* Outstanding model performance. DEML is an extension of a SuperLearner(SL) ensemble algorithm (Naimi and Balzer 2018; Polley and Van Der Laan 2010; Van der Laan et al. 2007) by introducing the neural network hierarchy structure. Generally, it achieved higher estimation accuracy than SL and other single ML models. 
+
+* Assessing constructed individual models simultaneously. DEML can evaluate the performance of all constructed individual models simultaneously and generate the optimal weights for each model.
+
+* Customizing the model structure and algorithms. You can modify the structure of DEML and achieve the best one for your tasks.
+
+* Minimizing errors from empirical experience. DEML not only evaluates the performance of all constructed models simultaneously but also automatically selects an optimal integration, as well as the selection of hyper-parameters.
+
+* Easy to use and extent. You do not need to have a high-steep learning curve to learn how it works.
+
+
+The details about the DEML can be found [here](https://ehp.niehs.nih.gov/doi/full/10.1289/EHP9752). 
+
+# The DEML framework
+
+::: {align="center"}
+<img src="./graphics/demlfigurev3.png" width="800" height="550"/>
+:::
+
+The DEML framework proposed above is a three-level stacked ensemble approach. It is based on the SuperLearner(SL) ensemble algorithm (Naimi and Balzer 2018; Polley and Van Der Laan 2010; Van der Laan et al. 2007) introduced in the neural network hierarchy structure.
+
+# Basic steps for DEML
+
+1.  Data preparation
+2.  Establish base models
+3.  Stacking meta models
+4.  Prediction based on new data set
+
+# Example:
+
+To estimate the daily ambient PM2.5 in the northeast of China in 2015-2016
+
+## 1. Data preparation
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+# load library
+library(ggplot2)
+library(caret)
+library(skimr)
+library(CAST)
+library(SuperLearner)
+```
+
+```{r message=FALSE, warning=FALSE}
+library(deeper)
+
+data("envir_example")
+```
+
+```{r echo=FALSE}
+knitr::kable(x = head(envir_example[1:6, 1:8]), digits = 2)
+```
+
+## 1.1 Data clean
+
+The basic data clean strategies include:
+
+1.  Variable type setting
+
+2.  Extreme value (outliers) detection
+
+3.  Missing value operation (imputation, drop)
+
+4.  Data transforming (normalization/standardization, eg. scale, centralize,log-transform and others)
+
+``` {.r}
+# skim the data missing value and distribution
+skimr::skim(envir_example)
+```
+
+```{r echo=FALSE}
+dis_test <- skimr::skim(envir_example)
+
+knitr::kable(x = tail(dis_test[, c(1:4, 13:14)], 4), digits = 1)
+```
+
+## 1.2 Data split
+
+We randomly select 20% of the data as independent testing dataset, and the remainder were used as the training dataset.
+
+The split strategy is based on the size of your sample as well as your question.
+
+```{r}
+set.seed(1234) # to achieve a repeatable results
+
+size <-
+  caret::createDataPartition(y = envir_example$PM2.5,
+                             p = 0.8, list = FALSE)
+trainset <- envir_example[size, ]
+testset <- envir_example[-size, ]
+```
+
+Identify the dependence and independence variables
+
+```{r}
+y <- c("PM2.5")
+x <- colnames(envir_example[-c(1, 6)]) # except "date" and "PM2.5"
+```
+
+## Challenging 1
+
+Q: Estimate annual average NO2 in Sydney in 2005-2018
+
+Download the Sydney NO2 data in the [CloudStor](https://www.aarnet.edu.au/cloudstor)
+
+Tasks:
+
+1.  Setting the dependence ("no2_annual") and others as independent variables
+
+2.  Split 10% of data as testing data set
+
+```{r}
+#try it here
+```
+
+
+```{r eval=FALSE, include=FALSE}
+load(
+  "C:/Users/yuwen/OneDrive - Monash University/2021 work/workshops/20220908 DEEPER workshop/talk materials/quiz/data_Sydney.rda"
+)
+# dataset split
+set.seed(1234)
+size <-
+  caret::createDataPartition(y = data_test$no2_annual,
+                             p = 0.9,
+                             list = FALSE)
+
+trainset_syd <- data_test[size,]
+testset_syd <- data_test[-size,]
+### Identify the dependence and independence variables
+
+dependence <- c("no2_annual")
+independence <- colnames(data_test[-c(1)]) # except "no2_annual"
+```
+
+## 2. Establish base models
+
+## 2.1 Single base model training
+
+Q: How to select the best parameter for a single base model?
+
+
+We can set or adjust the parameters of a base model using 'tuningModel' function.
+
+```{r}
+ranger <-
+  tuningModel(
+    basemodel  = 'SL.ranger',
+    params = list(num.trees = 100),
+    tune = list(mtry = c(1, 3, 7))
+  )
+```
+
+Here we will train a Random Forest (RF) model with the specific parameters and using 5-fold Cross validation (CV) to assess the model performance.
+
+```{r}
+# training the RF model with different parameters simultaneously
+
+start_time <- Sys.time()
+model1 <-
+  predictModel(
+    Y = trainset[, y],
+    X = trainset[, x],
+    base_model = c(ranger),
+    cvControl = list(V = 5)
+  )
+end_time <- Sys.time()
+end_time - start_time
+#print(model1$base_ensemble_value)
+```
+
+The training results show that 'mtry = 7' could achieve a better RF model performance.
+
+## 2.2 Model prediction
+
+After training a base ML model, we can use it to estimate the independent testing dataset by using 'predict' function.
+
+Note: 'predict()'function was recommended to limit its sources (namespace) to reduce the conflict with other R package such as stats::predict()
+
+```{r}
+# compare the model performance in the independent testing dataset
+pred_model1 <- deeper::predict(object = model1, newX = testset[, x])
+
+# get each base model prediction
+head(pred_model1$pre_base$library.predict)
+```
+
+```{r}
+# calculate model performance in testing dataset
+print(apply(
+  X = pred_model1$pre_base$library.predict,
+  MARGIN = 2,
+  FUN = caret::R2,
+  obs = testset[, y]
+))
+```
+
+After examine the model performance in an independent testing dataset, we may finally select the RF model with mtry = 7 as the best parameters.
+
+
+## Challenging 2
+
+Tasks:
+
+1.  Establish a Random Forest model with parameter: mtry = 7 and leave others as default
+
+2.  Establish another base model 'xgboost' simultaneously by setting base_model = "SL.xgboost"
+
+```{r}
+#try it here
+```
+
+```{r eval=FALSE, include=FALSE}
+ranger_mtry_7 <-
+  tuningModel(basemodel  = 'SL.ranger',
+              params = list(mtry = 7))
+
+model_challenge2 <- predictModel(
+  Y = trainset_syd[, dependence],
+  X = trainset_syd[, independence],
+  base_model = c(ranger_mtry_7, "SL.xgboost"),
+  cvControl = list(V = 5)
+)
+
+```
+
+
+## 2.3 Establish base model with parallel computing
+
+Considering the time-consuming of running several base models simultaneously, we can select using parallel computing to help improve the computational efficiency.
+
+We can identify the index in the cross validation(CV) to conduct the spatial (cluster) or temporal CV
+
+```{r out.width="20%"}
+# there are 7 stations in the trainset
+unique(trainset$code) 
+# Create a list with 7 (folds) elements (each element contains index of rows to be considered on each fold)
+
+## conduct the spatial CV
+indices <-
+  CAST::CreateSpacetimeFolds(trainset, spacevar = "code", k = 7)
+
+# Rows of validation set on each fold
+
+v_raw <- indices$indexOut
+names(v_raw) <- seq(1:7)
+
+start_time <- Sys.time()
+
+model2 <- predictModel_parallel(
+  Y = trainset[, y],
+  X = trainset[, x],
+  base_model = c("SL.xgboost", "SL.ranger"),
+  cvControl = list(V = length(v_raw), validRows = v_raw),
+  number_cores = 4,
+  seed = 1234
+)
+end_time <- Sys.time()
+end_time - start_time
+## when number_cores is missing, it will indicate user to set one based on the operation system.
+
+# pred_m3 <- predictModel_parallel(
+#     Y = trainset[,y],
+#     X = trainset[,x],
+#     base_model = c("SL.xgboost",ranger),
+#     cvControl = list(V = length(v_raw), validRows = v_raw),
+#     seed = 1
+#   )
+
+#You have 8 cpu cores, How many cpu core you want to use:
+# type the number to continue the process.
+
+
+# prediction
+pred_model2 <- deeper::predict(object = model2, newX = testset[, x])
+
+```
+
+## 3. Stacking meta models
+
+After assessing the performances of base models, we now can move forward to the DEML by stacking meta models on it.
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+#Do include original feature
+#object do not include newX dataset
+model3_stack <-
+  stack_ensemble(
+    object = model1,
+    meta_model = c("SL.ranger", "SL.xgboost", "SL.glm"),
+    original_feature = FALSE,
+    X = trainset[, x]
+  )
+## the training results
+#model3_stack$stack_ensemble_value
+
+# achieving independent testing results
+model3_DEML <-
+  deeper::predict(object = model3_stack, newX = testset[, x])
+
+print(apply(
+  X = cbind(model3_DEML$pre_meta$library.predict,
+        model3_DEML$pre_meta$pred),
+  MARGIN = 2,
+  FUN = caret::R2,
+  obs = testset[, y]
+))
+
+print(apply(
+  X = cbind(model3_DEML$pre_meta$library.predict,
+        model3_DEML$pre_meta$pred),
+  MARGIN = 2,
+  FUN = caret::RMSE,
+  obs = testset[, y]
+))
+```
+
+
+## 3.1 Stacked meta models from scratch
+
+We can create DEML directly by setting the base models and meta models. But considering the unknown impact of the underlying model and computation time, this is not recommended.
+
+```{r}
+model4_stack <-
+  stack_ensemble.fit(
+    Y = trainset[, y],
+    X = trainset[, x],
+    base_model = c("SL.xgboost", ranger),
+    meta_model = c("SL.ranger", "SL.xgboost", "SL.glm"),
+    original_feature = FALSE
+  )
+```
+
+## 3.2 Stacked meta models with paralleling computing
+
+We also accelerate the calculation with paralleling computing in DEML. 
+
+Several key points are worthy to note:
+
+- If the base model used parallel computing, the meta-model also needs to be parallel.
+
+- When setting a specific CV index, please be consistent in meta-model training.
+
+- Do not use all of your computation cores to do paralleling. Leave at least one for your operating system.
+
+- 'Original_feature' is optional. It may generally improve your model performance but increase the computational complexity.
+
+```{r}
+#Do not include original feature
+model5_stack <-
+  stack_ensemble_parallel(
+    object = model2,
+    Y = trainset[, y],
+    meta_model = c("SL.ranger", "SL.xgboost", "SL.glm"),
+    original_feature = FALSE,
+    cvControl = list(V = length(v_raw), validRows = v_raw),
+    number_cores = 4
+  )
+# the training results
+
+# the testing results
+pred_model5_stack <-
+  deeper::predict(object = model5_stack, newX = testset[, x])
+```
+
+
+## Challenging 3
+
+Tasks:
+
+1. Stacking meta models  using RF and Xgboost (with original features) in Sydeny data to conduct DEML model
+
+2. Achieving the final DEML model performance in testing dataset
+
+```{r}
+#try it here
+```
+
+```{r eval=FALSE, include=FALSE}
+# training the DEML model
+model_challenging3 <- stack_ensemble(
+  object = model_challenge2,
+  Y = trainset_syd[, dependence],
+  X = trainset_syd[, independence],
+  meta_model = c("SL.ranger", "SL.xgboost"),
+  original_feature = TRUE
+)
+```
+
+```{r eval=FALSE, include=FALSE}
+# model performance for test dataset
+pred_DEML <-
+  deeper::predict(object = model_challenging3, newX = testset_syd[, independence])
+
+print(apply(
+  X = pred_DEML$pre_meta$pred,
+  MARGIN = 2,
+  FUN = caret::R2,
+  obs = testset_syd[, dependence]
+))
+```
+
+## Challenging 4
+
+Download the Sydney NO2 data in the [CloudStor](https://www.aarnet.edu.au/cloudstor)
+
+Task:
+
+To estimate 10km grid cell yearly NO2 in Sydney.
+
+```{r}
+#try it here
+```
+
+```{r eval=FALSE, include=FALSE}
+# load the grid cell dataset
+predictor_no2_gsyd_10km_2005_2018 <-
+  readRDS(
+    "C:/Users/yuwen/OneDrive - Monash University/2021 work/workshops/20220908 DEEPER workshop/talk materials/quiz/DEEPER_workshop_2022/DEEPER_workshop_2022/predictor_no2_gsyd_10km_2005_2018_WY2.rds"
+  )
+
+pred_DEML_grid <-
+  deeper::predict(object = model_challenging3, newX = predictor_no2_gsyd_10km_2005_2018)
+
+# final DEML prediction
+head(pred_DEML_grid$pre_meta$pred)
+```
+
+## 4. Plot the results
+
+We can finally have the scatter plot using 'assess.plot' function in deeper.
+
+```{r}
+plot_DEML <-
+  assess.plot(pre = model3_DEML$pre_meta$pred, obs = testset[, y])
+
+print(plot_DEML$plot)
+```
+
+## 5. Citation
+
+Wenhua Yu, Shanshan Li, Tingting Ye,Rongbin Xu, Jiangning Song, Yuming Guo (2022) Deep ensemble machine learning framework for the estimation of PM2.5 concentrations,Environmental health perspectives: [https://doi.org/10.1289/EHP9752](https://doi.org/10.1289/EHP9752)
