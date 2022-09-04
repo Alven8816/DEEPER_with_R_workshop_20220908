@@ -41,7 +41,7 @@ Location: 553 St Kilda Road, Melbourne.
 
     +  installed certain dependent R packages: [devtools](https://cran.r-project.org/web/packages/devtools/index.html), [SuperLearner(\>= 2.0-28)](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html), deeper (learn how to install it [here](https://github.com/Alven8816/deeper) )
 
-    +  installed other suggested (optional) R packages depend on what ML model would be used, eg. ranger, gbm, xgboost, gam et al.
+    +  installed other suggested R packages: eg. nnls, foreach,splines, gam, ranger, gbm, xgboost et al.
     
 - Install python ?
 

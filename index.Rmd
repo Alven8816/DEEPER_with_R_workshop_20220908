@@ -6,6 +6,7 @@ output:
     toc: true
     toc_float: true
     mathjax: null
+    df_print: paged
     css: assets/html_font.css
 ---
 
@@ -18,7 +19,9 @@ div.main-container {
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
-
+library(kableExtra)
+library(knitr)
+library(rmarkdown)
 ```
 
 
@@ -30,7 +33,7 @@ Before installation, please make sure:
 
 -   installed certain dependent R packages: devtools, SuperLearner(\>= 2.0-28)
 
--   installed other suggested R packages depend on what ML model would be used, eg. ranger, gbm, xgboost, gam et al.
+-   installed other suggested R packages: eg. nnls, foreach,splines, gam, ranger, gbm, xgboost et al.
 
 
 The developing version of deeper can be found from [github](https://github.com/Alven8816/deeper).
@@ -52,7 +55,7 @@ Install deeper R package.
 
 * Assessing constructed individual models simultaneously. DEML can evaluate the performance of all constructed individual models simultaneously and generate the optimal weights for each model.
 
-* Customizing the model structure and algorithms. You can modify the structure of DEML and achieve the best one for your tasks.
+* Customizing diverse hierarchy structure and algorithms. You can modify the structure of DEML and achieve the best one for your tasks.
 
 * Minimizing errors from empirical experience. DEML not only evaluates the performance of all constructed models simultaneously but also automatically selects an optimal integration, as well as the selection of hyper-parameters.
 
@@ -71,14 +74,52 @@ The DEML framework proposed above is a three-level stacked ensemble approach. It
 
 # Basic steps for DEML
 
-1.  Data preparation
-2.  Establish base models
-3.  Stacking meta models
-4.  Prediction based on new data set
+* **Step 1.  Data preparation**
+
+Including data collection, data clean, setting trianing and testing dataset, and independent variables selection.
+
+**Note: DEML could not directly deal with missing values and missing value imputation technologies is recommended prior to the use of the DEML model.**
+
+    
+* **Step 2.  Establish base models**
+
+Using predictModel() or predictModel_parallel() to establish the base models. A tuningModel() function can be used to tuning the parameters to get the best single base model.
+
+* **Step 3.  Stacking meta models**
+
+We use stack_ensemble(),stack_ensemble.fit(), or stack_ensemble_parallel() function to stack the meta models to get a DEML model.
+
+
+* **Step 4.  Prediction based on new data set**
+
+After establishment of DEML model, the predict() can be used predict the unseen data set.
+
+To assess the performance of the models, assess.plot() can be used by comparing the original observations (y in test set) and the prediction. The assess.plot() also return the point scatter plot.
+
+
+# Algorithms selection
+
+```r
+# Our modelS are based on 'SuperLearner' R package
+data(model_list) # to get "model_details" file on the algorithms packages
+```
+
+```{r echo=FALSE}
+library(deeper)
+data(model_list) # to get more details about the algorithms
+
+kbl(cbind(model_details)) %>%
+  kable_paper() %>%
+  scroll_box(width = "100%", height = "200px")
+```
+
+In the 'type' column, "R": can be used for regression or classification;"N": can be used for regression but variables require to be numeric style; "C": just used in classification.
+
+
 
 # Example:
 
-To estimate the daily ambient PM2.5 in the northeast of China in 2015-2016
+*To estimate the daily ambient PM2.5 in the northeast of China in 2015-2016*
 
 ## 1. Data preparation
 
@@ -98,7 +139,9 @@ data("envir_example")
 ```
 
 ```{r echo=FALSE}
-knitr::kable(x = head(envir_example[1:6, 1:8]), digits = 2)
+kbl(envir_example) %>%
+  kable_paper() %>%
+  scroll_box(width = "100%", height = "200px")
 ```
 
 ## 1.1 Data clean
@@ -121,7 +164,9 @@ skimr::skim(envir_example)
 ```{r echo=FALSE}
 dis_test <- skimr::skim(envir_example)
 
-knitr::kable(x = tail(dis_test[, c(1:4, 13:14)], 4), digits = 1)
+kbl(dis_test) %>%
+  kable_paper() %>%
+  scroll_box(width = "100%", height = "200px")
 ```
 
 ## 1.2 Data split
@@ -219,20 +264,31 @@ end_time - start_time
 #print(model1$base_ensemble_value)
 ```
 
+The results show the weight, R2, and the root-mean-square error (RMSE) of each model. "ranger_1","ranger_2","ranger_3" note the Random Forest model with parameters mtry = 1,3,7 separately.
+
 The training results show that 'mtry = 7' could achieve a better RF model performance.
 
 ## 2.2 Model prediction
 
 After training a base ML model, we can use it to estimate the independent testing dataset by using 'predict' function.
 
-Note: 'predict()'function was recommended to limit its sources (namespace) to reduce the conflict with other R package such as stats::predict()
+**Note: 'predict()'function was recommended to limit its sources (namespace) to reduce the conflict with other R package such as stats::predict()**
 
 ```{r}
 # compare the model performance in the independent testing dataset
 pred_model1 <- deeper::predict(object = model1, newX = testset[, x])
+```
 
+```r
 # get each base model prediction
 head(pred_model1$pre_base$library.predict)
+```
+
+```{r echo=FALSE}
+base_model_output <- pred_model1$pre_base$library.predict
+kbl(base_model_output,align = "c") %>%
+  kable_paper() %>%
+  scroll_box(width = "70%", height = "200px")
 ```
 
 ```{r}
@@ -309,21 +365,13 @@ end_time <- Sys.time()
 end_time - start_time
 ## when number_cores is missing, it will indicate user to set one based on the operation system.
 
-# pred_m3 <- predictModel_parallel(
-#     Y = trainset[,y],
-#     X = trainset[,x],
-#     base_model = c("SL.xgboost",ranger),
-#     cvControl = list(V = length(v_raw), validRows = v_raw),
-#     seed = 1
-#   )
-
 #You have 8 cpu cores, How many cpu core you want to use:
 # type the number to continue the process.
+```
 
-
-# prediction
+```{r}
+# prediction for testing dataset
 pred_model2 <- deeper::predict(object = model2, newX = testset[, x])
-
 ```
 
 ## 3. Stacking meta models
@@ -333,6 +381,8 @@ After assessing the performances of base models, we now can move forward to the 
 ```{r message=FALSE, warning=FALSE, paged.print=FALSE}
 #Do include original feature
 #object do not include newX dataset
+
+## the training results
 model3_stack <-
   stack_ensemble(
     object = model1,
@@ -340,10 +390,9 @@ model3_stack <-
     original_feature = FALSE,
     X = trainset[, x]
   )
-## the training results
 #model3_stack$stack_ensemble_value
 
-# achieving independent testing results
+# Independent testing results
 model3_DEML <-
   deeper::predict(object = model3_stack, newX = testset[, x])
 
@@ -471,9 +520,14 @@ predictor_no2_gsyd_10km_2005_2018 <-
 pred_DEML_grid <-
   deeper::predict(object = model_challenging3, newX = predictor_no2_gsyd_10km_2005_2018)
 
-# final DEML prediction
-head(pred_DEML_grid$pre_meta$pred)
+# get the final DEML prediction
+DEML_model_output <- pred_DEML_grid$pre_meta$pred
+
+kbl(DEML_model_output,align = "c") %>%
+  kable_paper() %>%
+  scroll_box(width = "50%", height = "200px")
 ```
+
 
 ## 4. Plot the results
 
