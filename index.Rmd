@@ -6,8 +6,9 @@ output:
     toc: true
     toc_float: true
     mathjax: null
-    df_print: paged
+    
     css: assets/html_font.css
+always_allow_html: true
 ---
 
 <style type="text/css">
