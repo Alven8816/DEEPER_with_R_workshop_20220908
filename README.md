@@ -36,17 +36,24 @@ Location: 553 St Kilda Road, Melbourne.
 
 -	No requirement if you only attending session 1
 
--	For session 2: you need to install R, RStudio on your computer and make sure:
+-	For session 2 deeper tutorial: 
+
+1. If you prefer to use your local computer, you need to install R, RStudio on your computer and make sure:
     +  using R (\>= 3.5.0)
+    +  installed certain dependent R packages: [devtools](https://cran.r-project.org/web/packages/devtools/index.html), [SuperLearner(\>= 2.0-28)](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html), [deeper](https://github.com/Alven8816/deeper). You can use the following syntax to install 'deeper':
+    ```r
+    library(devtools)
+    install_github("Alven8816/deeper")
+    ```
+    +  installed other suggested R packages: caret, skimr, CAST, ranger, gbm, xgboost.
 
-    +  installed certain dependent R packages: [devtools](https://cran.r-project.org/web/packages/devtools/index.html), [SuperLearner(\>= 2.0-28)](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html), deeper (learn how to install it [here](https://github.com/Alven8816/deeper) )
 
-    +  installed other suggested R packages: eg. nnls, foreach,splines, gam, ranger, gbm, xgboost et al.
-    
-- Install python ?
+2. If you want to follow our tutorial with the [Google colab](https://colab.research.google.com/), Please make sure you have a Google Drive account.
+
+3. Please install a deeper GUI software [here](https://github.com/Alven8816/deeper) 
 
 
-### Click [here](https://www.aarnet.edu.au/cloudstor) to download Sydney data required for the tutorial
+4. ***Click [here](https://www.aarnet.edu.au/cloudstor) to download Sydney data required for the tutorial***
 
 
 ### Presentation slides and tutorial files can also be found 

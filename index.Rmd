@@ -35,7 +35,7 @@ Before installation, please make sure:
 
 -   installed certain dependent R packages: devtools, SuperLearner(\>= 2.0-28)
 
--   installed other suggested R packages: caret, skimr, CAST, ranger, gbm, xgboost, (nnls, foreach,splines, gam)
+-   installed other suggested R packages: pacman, caret, skimr, CAST, ranger, gbm, xgboost, hexbin, (nnls, foreach, splines, gam)
 
 
 The developing version of deeper can be found from [github](https://github.com/Alven8816/deeper).

@@ -1,13 +1,15 @@
 ---
 title: "Deep ensemble machine learning (DEML) for estimating environmental exposure - Session 2"
-author: "Wenhua(Alven) Yu "
+author: "Wenhua(Alven) Yu; Liam Liu "
+date: "`r Sys.Date()`"
 output: 
   html_document:
     toc: true
     toc_float: true
     mathjax: null
-    df_print: paged
+    
     css: assets/html_font.css
+always_allow_html: true
 ---
 
 <style type="text/css">
@@ -33,7 +35,7 @@ Before installation, please make sure:
 
 -   installed certain dependent R packages: devtools, SuperLearner(\>= 2.0-28)
 
--   installed other suggested R packages: eg. nnls, foreach,splines, gam, ranger, gbm, xgboost et al.
+-   installed other suggested R packages: pacman, caret, skimr, CAST, ranger, gbm, xgboost, hexbin, (nnls, foreach, splines, gam)
 
 
 The developing version of deeper can be found from [github](https://github.com/Alven8816/deeper).
@@ -100,7 +102,7 @@ To assess the performance of the models, assess.plot() can be used by comparing 
 # Algorithms selection
 
 ```r
-# Our modelS are based on 'SuperLearner' R package
+# Our models are based on 'SuperLearner' R package
 data(model_list) # to get "model_details" file on the algorithms packages
 ```
 
@@ -130,6 +132,7 @@ library(caret)
 library(skimr)
 library(CAST)
 library(SuperLearner)
+library(hexbin)
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -200,9 +203,11 @@ Download the Sydney NO2 data in the [CloudStor](https://www.aarnet.edu.au/clouds
 
 Tasks:
 
-1.  Setting the dependence ("no2_annual") and others as independent variables
+1.  Data clean: change the 'year' as a factor type and delete variable 'X'
 
-2.  Split 10% of data as testing data set
+2.  Setting the dependence ("no2_annual") and others as independent variables
+
+3.  Randomly split 10% of data as testing data set
 
 ```{r}
 #try it here
@@ -210,22 +215,24 @@ Tasks:
 
 
 ```{r eval=FALSE, include=FALSE}
-load(
-  "C:/Users/yuwen/OneDrive - Monash University/2021 work/workshops/20220908 DEEPER workshop/talk materials/quiz/data_Sydney.rda"
-)
+data_Sydney <- read.csv("C:/Users/wyuu0022/OneDrive - Monash University/2021 work/workshops/20220908 DEEPER workshop/talk materials/quiz/Sydney dataset/data_Sydney.csv")
+
+data_Sydney$X <- NULL
+data_Sydney$year <- as.factor(data_Sydney$year)
+
 # dataset split
 set.seed(1234)
 size <-
-  caret::createDataPartition(y = data_test$no2_annual,
+  caret::createDataPartition(y = data_Sydney$no2_annual,
                              p = 0.9,
                              list = FALSE)
 
-trainset_syd <- data_test[size,]
-testset_syd <- data_test[-size,]
+trainset_syd <- data_Sydney[size,]
+testset_syd <- data_Sydney[-size,]
 ### Identify the dependence and independence variables
 
 dependence <- c("no2_annual")
-independence <- colnames(data_test[-c(1)]) # except "no2_annual"
+independence <- colnames(data_Sydney[-c(1)]) # except "no2_annual"
 ```
 
 ## 2. Establish base models
@@ -324,8 +331,7 @@ ranger_mtry_7 <-
 model_challenge2 <- predictModel(
   Y = trainset_syd[, dependence],
   X = trainset_syd[, independence],
-  base_model = c(ranger_mtry_7, "SL.xgboost"),
-  cvControl = list(V = 5)
+  base_model = c(ranger_mtry_7, "SL.xgboost")
 )
 
 ```
@@ -449,7 +455,7 @@ model5_stack <-
   stack_ensemble_parallel(
     object = model2,
     Y = trainset[, y],
-    meta_model = c("SL.ranger", "SL.xgboost", "SL.glm"),
+    meta_model = c("SL.glm"),
     original_feature = FALSE,
     cvControl = list(V = length(v_raw), validRows = v_raw),
     number_cores = 4
@@ -506,19 +512,24 @@ Task:
 
 To estimate 10km grid cell yearly NO2 in Sydney.
 
+**Note: Please make sure all grid input data should keep the same data structure and variable types with the training data. Using 'attr.all.equal' to test the similarity.**
+
+**Tips: Using 'tidyverse::bind_rows' to combine the training data and grid data first. And then splitting the grid data for prediction can always help to keep the same structure with training data.**
+
 ```{r}
 #try it here
 ```
 
 ```{r eval=FALSE, include=FALSE}
 # load the grid cell dataset
-predictor_no2_gsyd_10km_2005_2018 <-
-  readRDS(
-    "C:/Users/yuwen/OneDrive - Monash University/2021 work/workshops/20220908 DEEPER workshop/talk materials/quiz/DEEPER_workshop_2022/DEEPER_workshop_2022/predictor_no2_gsyd_10km_2005_2018_WY2.rds"
-  )
+
+predictor_scaled_no2_gsyd_10km_2005_2018 <- read.csv(file = "C:/Users/wyuu0022/OneDrive - Monash University/2021 work/workshops/20220908 DEEPER workshop/talk materials/quiz/Sydney dataset/predictor_scaled_no2_gsyd_10km_2005_2018_WY3.csv")
+
+predictor_scaled_no2_gsyd_10km_2005_2018$year <- as.factor(predictor_scaled_no2_gsyd_10km_2005_2018$year)
+predictor_scaled_no2_gsyd_10km_2005_2018$X <- NULL
 
 pred_DEML_grid <-
-  deeper::predict(object = model_challenging3, newX = predictor_no2_gsyd_10km_2005_2018)
+  deeper::predict(object = model_challenging3, newX = predictor_scaled_no2_gsyd_10km_2005_2018)
 
 # get the final DEML prediction
 DEML_model_output <- pred_DEML_grid$pre_meta$pred

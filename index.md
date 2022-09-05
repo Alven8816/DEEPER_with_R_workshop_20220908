@@ -13,8 +13,8 @@ Before installation, please make sure:
 -   installed certain dependent R packages: devtools, SuperLearner(&gt;=
     2.0-28)
 
--   installed other suggested R packages: eg. nnls, foreach,splines,
-    gam, ranger, gbm, xgboost et al.
+-   installed other suggested R packages: caret, skimr, CAST, ranger,
+    gbm, xgboost, hexbin, (nnls, foreach, splines, gam)
 
 The developing version of deeper can be found from
 [github](https://github.com/Alven8816/deeper).
@@ -98,7 +98,7 @@ The assess.plot() also return the point scatter plot.
 
 # Algorithms selection
 
-    # Our modelS are based on 'SuperLearner' R package
+    # Our models are based on 'SuperLearner' R package
     data(model_list) # to get "model_details" file on the algorithms packages
 
 <table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
@@ -630,6 +630,7 @@ be numeric style; “C”: just used in classification.
     library(skimr)
     library(CAST)
     library(SuperLearner)
+    library(hexbin)
 
     library(deeper)
 
@@ -123376,10 +123377,13 @@ Download the Sydney NO2 data in the
 
 Tasks:
 
-1.  Setting the dependence (“no2\_annual”) and others as independent
+1.  Data clean: change the ‘year’ as a factor type and delete variable
+    ‘X’
+
+2.  Setting the dependence (“no2\_annual”) and others as independent
     variables
 
-2.  Split 10% of data as testing data set
+3.  Randomly split 10% of data as testing data set
 
 <!-- -->
 
@@ -123428,7 +123432,7 @@ performance.
     end_time <- Sys.time()
     end_time - start_time
 
-    ## Time difference of 4.421735 secs
+    ## Time difference of 3.981715 secs
 
     #print(model1$base_ensemble_value)
 
@@ -130061,7 +130065,7 @@ spatial (cluster) or temporal CV
     end_time <- Sys.time()
     end_time - start_time
 
-    ## Time difference of 14.23393 secs
+    ## Time difference of 13.83287 secs
 
     ## when number_cores is missing, it will indicate user to set one based on the operation system.
 
@@ -130180,7 +130184,7 @@ Several key points are worthy to note:
       stack_ensemble_parallel(
         object = model2,
         Y = trainset[, y],
-        meta_model = c("SL.ranger", "SL.xgboost", "SL.glm"),
+        meta_model = c("SL.glm"),
         original_feature = FALSE,
         cvControl = list(V = length(v_raw), validRows = v_raw),
         number_cores = 4
@@ -130189,10 +130193,10 @@ Several key points are worthy to note:
     ## 
     ## The stack ensemble cross validation value:
     ## 
-    ##        SL.ranger_All SL.xgboost_All SL.glm_All     deeper
-    ## weight     0.1747935      0.0000000  0.8252065  1.0000000
-    ## R2         0.8615084      0.8463332  0.8729455  0.9019219
-    ## RMSE      24.1577567     25.4904753 23.1140687 20.3172672
+    ##        SL.glm_All     deeper
+    ## weight  1.0000000  1.0000000
+    ## R2      0.8729455  0.8802994
+    ## RMSE   23.1140687 22.4318672
 
     # the training results
 
@@ -130221,6 +130225,14 @@ Download the Sydney NO2 data in the
 Task:
 
 To estimate 10km grid cell yearly NO2 in Sydney.
+
+**Note: Please make sure all grid input data should keep the same data
+structure and variable types with the training data. Using
+‘attr.all.equal’ to test the similarity.**
+
+**Tips: Using ‘tidyverse::bind\_rows’ to combine the training data and
+grid data first. And then splitting the grid data for prediction can
+always help to keep the same structure with training data.**
 
     #try it here
 
