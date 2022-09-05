@@ -1,0 +1,28 @@
+"0","model_challenge2 <- predictModel(
+  Y = trainset_syd[, dependence],
+  X = trainset_syd[, independence],
+  base_model = c(ranger_mtry_7, ""SL.xgboost"")
+)
+"
+"1","
+
+The base models Cross validation result:
+
+"
+"1","      "
+"1"," SL.ranger_1_All"
+"1"," SL.xgboost_All"
+"1","
+weight"
+"1","       0.2442065"
+"1","      0.7557935"
+"1","
+R2    "
+"1","       0.8308491"
+"1","      0.8536025"
+"1","
+RMSE  "
+"1","       1.3902212"
+"1","      1.2853357"
+"1","
+"

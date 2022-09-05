@@ -1,0 +1,6 @@
+"0","load(
+  ""./talk materials/quiz/data_Sydney.rda""
+)
+"
+"2","Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
+"
