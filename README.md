@@ -5,7 +5,7 @@
 
 Time: 10:00 AM – 13:00 PM, 8 September 2022.
 
-It will be a hybrid workshop. Both [online](zoom link) and on-site are welcome. 
+It will be a hybrid workshop. Both online and on-site are welcome. 
 
 Location: 553 St Kilda Road, Melbourne.
 
@@ -40,20 +40,23 @@ Location: 553 St Kilda Road, Melbourne.
 
 1. If you prefer to use your local computer, you need to install R, RStudio on your computer and make sure:
     +  using R (\>= 3.5.0)
-    +  installed certain dependent R packages: [devtools](https://cran.r-project.org/web/packages/devtools/index.html), [SuperLearner(\>= 2.0-28)](https://cran.r-project.org/web/packages/SuperLearner/vignettes/Guide-to-SuperLearner.html), [deeper](https://github.com/Alven8816/deeper). You can use the following syntax to install 'deeper':
+    +  installed suggested R packages: devtools,SuperLearner, caret, skimr, CAST, ranger, gbm, xgboost.
+    
+    ```r
+    # check the package installation
+    #install.packages("pacman")
+    library(pacman)
+    p_load("devtools","SuperLearner","ranger","CAST","caret","skimr","gbm","xgboost","hexbin")
+    ```
+    +  installed [deeper](https://github.com/Alven8816/deeper) R packages with the following syntax:
     ```r
     library(devtools)
     install_github("Alven8816/deeper")
     ```
-    +  installed other suggested R packages: caret, skimr, CAST, ranger, gbm, xgboost.
 
+2. If you want to follow our tutorial with the [Google colab](https://colab.research.google.com/), Please make sure you have a [Google Drive account](https://drive.google.com/drive/u/0/my-drive).
 
-2. If you want to follow our tutorial with the [Google colab](https://colab.research.google.com/), Please make sure you have a Google Drive account.
-
-3. Please install a deeper GUI software [here](https://github.com/Alven8816/deeper) 
-
-
-4. ***Click [here](https://www.aarnet.edu.au/cloudstor) to download Sydney data required for the tutorial***
+3. Click [here](https://forms.gle/4bXqaj2zUsT2mMMA9) to download Sydney data  and a deeper GUI software required for the tutorial with the password **"DEEPERworkshop2022"**.
 
 
 ### Presentation slides and tutorial files can also be found 
@@ -67,6 +70,10 @@ Location: 553 St Kilda Road, Melbourne.
 
 If you are having trouble with any of the documents. Please contact
 
-wenhua.yu@monash.edu
+wenhua.yu@monash.edu for R deeper pakcage;
+
+liam.liu@monash.edu for deeper GUI;
+
+yuming.guo@monash.edu for other questions.
 
 

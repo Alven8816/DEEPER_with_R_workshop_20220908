@@ -1,0 +1,79 @@
+
+
+# CAR Workshop: Deep ensemble machine learning for estimating environmental exposure and beyond 
+
+
+Time: 10:00 AM – 13:00 PM, 8 September 2022.
+
+It will be a hybrid workshop. Both online and on-site are welcome. 
+
+Location: 553 St Kilda Road, Melbourne.
+
+
+## Through the workshop, we expect you can learn:
+
+1. Understand why and how to perform exposure assessment; 
+
+2. Understand the exposure assessment and various related methods – their strengths and limitations;
+
+3. How to use machine learning methods;
+
+4. how to use the "deeper" R package to perform the deep ensemble machine learning model.
+
+
+## This training includes two sessions
+
+* **Part 1: Introduction of Deep ensemble machine learning (1 hour).** 
+
+    Presenter for part 1: Professor Yuming Guo
+
+* **Part 2: Practice on how to perform Deep ensemble machine learning using R package “deeper” (2 hours).**
+
+    Tutors for part 2: Drs Alven Yu and Liam Liu
+
+
+## Requirements 
+
+-	No requirement if you only attending session 1
+
+-	For session 2 deeper tutorial: 
+
+1. If you prefer to use your local computer, you need to install R, RStudio on your computer and make sure:
+    +  using R (\>= 3.5.0)
+    +  installed suggested R packages: devtools,SuperLearner, caret, skimr, CAST, ranger, gbm, xgboost.
+    
+    ```r
+    # check the package installation
+    #install.packages("pacman")
+    library(pacman)
+    p_load("devtools","SuperLearner","ranger","CAST","caret","skimr","gbm","xgboost","hexbin")
+    ```
+    +  installed [deeper](https://github.com/Alven8816/deeper) R packages with the following syntax:
+    ```r
+    library(devtools)
+    install_github("Alven8816/deeper")
+    ```
+
+2. If you want to follow our tutorial with the [Google colab](https://colab.research.google.com/), Please make sure you have a [Google Drive account](https://drive.google.com/drive/u/0/my-drive).
+
+3. Click [here](https://forms.gle/4bXqaj2zUsT2mMMA9) to download Sydney data  and a deeper GUI software required for the tutorial with the password **"DEEPERworkshop2022"**.
+
+
+### Presentation slides and tutorial files can also be found 
+
+
+- <a href="https://github.com/Alven8816/deeper">S1 Presentation slides coming soon</a>
+
+- <a href="https://alven8816.github.io/DEEPER_with_R_workshop_20220908/">S2 Tutorial</a>
+
+### Support or Contact
+
+If you are having trouble with any of the documents. Please contact
+
+wenhua.yu@monash.edu for R deeper pakcage;
+
+liam.liu@monash.edu for deeper GUI;
+
+yuming.guo@monash.edu for other questions.
+
+

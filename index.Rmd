@@ -12,20 +12,19 @@ output:
 always_allow_html: true
 ---
 
+```{=html}
 <style type="text/css">
 div.main-container {
   max-width: 1600px !important;
 }
 </style>
-
-
+```
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 library(kableExtra)
 library(knitr)
 library(rmarkdown)
 ```
-
 
 # R package 'deeper' install
 
@@ -37,15 +36,21 @@ Before installation, please make sure:
 
 -   installed other suggested R packages: pacman, caret, skimr, CAST, ranger, gbm, xgboost, hexbin, (nnls, foreach, splines, gam)
 
+``` {.r}
+# check the package installation
+#install.packages("pacman")
+library(pacman)
+p_load("devtools","SuperLearner","ranger","CAST","caret","skimr","gbm","xgboost","hexbin")
+```
 
-The developing version of deeper can be found from [github](https://github.com/Alven8816/deeper).
-
-Using the following syntax to install:
+Using the following syntax to install deeper R package:
 
 ``` {.r}
 library(devtools)
 install_github("Alven8816/deeper")
 ```
+
+The developing version of deeper can be found from [github](https://github.com/Alven8816/deeper).
 
 ## Activity
 
@@ -53,18 +58,17 @@ Install deeper R package.
 
 # The advantage of DEML
 
-* Outstanding model performance. DEML is an extension of a SuperLearner(SL) ensemble algorithm (Naimi and Balzer 2018; Polley and Van Der Laan 2010; Van der Laan et al. 2007) by introducing the neural network hierarchy structure. Generally, it achieved higher estimation accuracy than SL and other single ML models. 
+-   Outstanding model performance. DEML is an extension of a SuperLearner(SL) ensemble algorithm (Naimi and Balzer 2018; Polley and Van Der Laan 2010; Van der Laan et al. 2007) by introducing the neural network hierarchy structure. Generally, it achieved higher estimation accuracy than SL and other single ML models.
 
-* Assessing constructed individual models simultaneously. DEML can evaluate the performance of all constructed individual models simultaneously and generate the optimal weights for each model.
+-   Assessing constructed individual models simultaneously. DEML can evaluate the performance of all constructed individual models simultaneously and generate the optimal weights for each model.
 
-* Customizing diverse hierarchy structure and algorithms. You can modify the structure of DEML and achieve the best one for your tasks.
+-   Customizing diverse hierarchy structure and algorithms. You can modify the structure of DEML and achieve the best one for your tasks.
 
-* Minimizing errors from empirical experience. DEML not only evaluates the performance of all constructed models simultaneously but also automatically selects an optimal integration, as well as the selection of hyper-parameters.
+-   Minimizing errors from empirical experience. DEML not only evaluates the performance of all constructed models simultaneously but also automatically selects an optimal integration, as well as the selection of hyper-parameters.
 
-* Easy to use and extent. You do not need to have a high-steep learning curve to learn how it works.
+-   Easy to use and extent. You do not need to have a high-steep learning curve to learn how it works.
 
-
-The details about the DEML can be found [here](https://ehp.niehs.nih.gov/doi/full/10.1289/EHP9752). 
+The details about the DEML can be found [here](https://ehp.niehs.nih.gov/doi/full/10.1289/EHP9752).
 
 # The DEML framework
 
@@ -76,32 +80,29 @@ The DEML framework proposed above is a three-level stacked ensemble approach. It
 
 # Basic steps for DEML
 
-* **Step 1.  Data preparation**
+-   **Step 1. Data preparation**
 
 Including data collection, data clean, setting trianing and testing dataset, and independent variables selection.
 
 **Note: DEML could not directly deal with missing values and missing value imputation technologies is recommended prior to the use of the DEML model.**
 
-    
-* **Step 2.  Establish base models**
+-   **Step 2. Establish base models**
 
 Using predictModel() or predictModel_parallel() to establish the base models. A tuningModel() function can be used to tuning the parameters to get the best single base model.
 
-* **Step 3.  Stacking meta models**
+-   **Step 3. Stacking meta models**
 
 We use stack_ensemble(),stack_ensemble.fit(), or stack_ensemble_parallel() function to stack the meta models to get a DEML model.
 
-
-* **Step 4.  Prediction based on new data set**
+-   **Step 4. Prediction based on new data set**
 
 After establishment of DEML model, the predict() can be used predict the unseen data set.
 
 To assess the performance of the models, assess.plot() can be used by comparing the original observations (y in test set) and the prediction. The assess.plot() also return the point scatter plot.
 
-
 # Algorithms selection
 
-```r
+``` {.r}
 # Our models are based on 'SuperLearner' R package
 data(model_list) # to get "model_details" file on the algorithms packages
 ```
@@ -116,8 +117,6 @@ kbl(cbind(model_details)) %>%
 ```
 
 In the 'type' column, "R": can be used for regression or classification;"N": can be used for regression but variables require to be numeric style; "C": just used in classification.
-
-
 
 # Example:
 
@@ -209,13 +208,9 @@ Tasks:
 
 3.  Randomly split 10% of data as testing data set
 
+
 ```{r}
-#try it here
-```
-
-
-```{r eval=FALSE, include=FALSE}
-data_Sydney <- read.csv("C:/Users/wyuu0022/OneDrive - Monash University/2021 work/workshops/20220908 DEEPER workshop/talk materials/quiz/Sydney dataset/data_Sydney.csv")
+data_Sydney <- read.csv("C:/Users/yuwen/OneDrive - Monash University/2021 work/workshops/20220908 DEEPER workshop/talk materials/quiz/final data example/training_data.csv")
 
 data_Sydney$X <- NULL
 data_Sydney$year <- as.factor(data_Sydney$year)
@@ -240,7 +235,6 @@ independence <- colnames(data_Sydney[-c(1)]) # except "no2_annual"
 ## 2.1 Single base model training
 
 Q: How to select the best parameter for a single base model?
-
 
 We can set or adjust the parameters of a base model using 'tuningModel' function.
 
@@ -286,7 +280,7 @@ After training a base ML model, we can use it to estimate the independent testin
 pred_model1 <- deeper::predict(object = model1, newX = testset[, x])
 ```
 
-```r
+``` {.r}
 # get each base model prediction
 head(pred_model1$pre_base$library.predict)
 ```
@@ -310,7 +304,6 @@ print(apply(
 
 After examine the model performance in an independent testing dataset, we may finally select the RF model with mtry = 7 as the best parameters.
 
-
 ## Challenging 2
 
 Tasks:
@@ -319,11 +312,8 @@ Tasks:
 
 2.  Establish another base model 'xgboost' simultaneously by setting base_model = "SL.xgboost"
 
-```{r}
-#try it here
-```
 
-```{r eval=FALSE, include=FALSE}
+```{r}
 ranger_mtry_7 <-
   tuningModel(basemodel  = 'SL.ranger',
               params = list(mtry = 7))
@@ -335,7 +325,6 @@ model_challenge2 <- predictModel(
 )
 
 ```
-
 
 ## 2.3 Establish base model with parallel computing
 
@@ -419,7 +408,6 @@ print(apply(
 ))
 ```
 
-
 ## 3.1 Stacked meta models from scratch
 
 We can create DEML directly by setting the base models and meta models. But considering the unknown impact of the underlying model and computation time, this is not recommended.
@@ -437,17 +425,17 @@ model4_stack <-
 
 ## 3.2 Stacked meta models with paralleling computing
 
-We also accelerate the calculation with paralleling computing in DEML. 
+We also accelerate the calculation with paralleling computing in DEML.
 
 Several key points are worthy to note:
 
-- If the base model used parallel computing, the meta-model also needs to be parallel.
+-   If the base model used parallel computing, the meta-model also needs to be parallel.
 
-- When setting a specific CV index, please be consistent in meta-model training.
+-   When setting a specific CV index, please be consistent in meta-model training.
 
-- Do not use all of your computation cores to do paralleling. Leave at least one for your operating system.
+-   Do not use all of your computation cores to do paralleling. Leave at least one for your operating system.
 
-- 'Original_feature' is optional. It may generally improve your model performance but increase the computational complexity.
+-   'Original_feature' is optional. It may generally improve your model performance but increase the computational complexity.
 
 ```{r}
 #Do not include original feature
@@ -467,20 +455,16 @@ pred_model5_stack <-
   deeper::predict(object = model5_stack, newX = testset[, x])
 ```
 
-
 ## Challenging 3
 
 Tasks:
 
-1. Stacking meta models  using RF and Xgboost (with original features) in Sydeny data to conduct DEML model
+1.  Stacking meta models using RF and Xgboost (with original features) in Sydeny data to conduct DEML model
 
-2. Achieving the final DEML model performance in testing dataset
+2.  Achieving the final DEML model performance in testing dataset
+
 
 ```{r}
-#try it here
-```
-
-```{r eval=FALSE, include=FALSE}
 # training the DEML model
 model_challenging3 <- stack_ensemble(
   object = model_challenge2,
@@ -506,8 +490,6 @@ print(apply(
 
 ## Challenging 4
 
-Download the Sydney NO2 data in the [CloudStor](https://www.aarnet.edu.au/cloudstor)
-
 Task:
 
 To estimate 10km grid cell yearly NO2 in Sydney.
@@ -516,14 +498,11 @@ To estimate 10km grid cell yearly NO2 in Sydney.
 
 **Tips: Using 'tidyverse::bind_rows' to combine the training data and grid data first. And then splitting the grid data for prediction can always help to keep the same structure with training data.**
 
-```{r}
-#try it here
-```
 
 ```{r eval=FALSE, include=FALSE}
 # load the grid cell dataset
 
-predictor_scaled_no2_gsyd_10km_2005_2018 <- read.csv(file = "C:/Users/wyuu0022/OneDrive - Monash University/2021 work/workshops/20220908 DEEPER workshop/talk materials/quiz/Sydney dataset/predictor_scaled_no2_gsyd_10km_2005_2018_WY3.csv")
+predictor_scaled_no2_gsyd_10km_2005_2018 <- read.csv(file = "C:/Users/yuwen/OneDrive - Monash University/2021 work/workshops/20220908 DEEPER workshop/talk materials/quiz/final data example/new_data.csv")
 
 predictor_scaled_no2_gsyd_10km_2005_2018$year <- as.factor(predictor_scaled_no2_gsyd_10km_2005_2018$year)
 predictor_scaled_no2_gsyd_10km_2005_2018$X <- NULL
@@ -539,7 +518,6 @@ kbl(DEML_model_output,align = "c") %>%
   scroll_box(width = "50%", height = "200px")
 ```
 
-
 ## 4. Plot the results
 
 We can finally have the scatter plot using 'assess.plot' function in deeper.
@@ -553,4 +531,4 @@ print(plot_DEML$plot)
 
 ## 5. Citation
 
-Wenhua Yu, Shanshan Li, Tingting Ye,Rongbin Xu, Jiangning Song, Yuming Guo (2022) Deep ensemble machine learning framework for the estimation of PM2.5 concentrations,Environmental health perspectives: [https://doi.org/10.1289/EHP9752](https://doi.org/10.1289/EHP9752)
+Wenhua Yu, Shanshan Li, Tingting Ye,Rongbin Xu, Jiangning Song, Yuming Guo (2022) Deep ensemble machine learning framework for the estimation of PM2.5 concentrations,Environmental health perspectives: <https://doi.org/10.1289/EHP9752>
