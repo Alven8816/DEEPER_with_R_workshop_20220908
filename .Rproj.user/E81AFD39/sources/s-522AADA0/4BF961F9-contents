@@ -62,13 +62,13 @@ Location: 553 St Kilda Road, Melbourne.
 ### Presentation slides and tutorial files can also be found 
 
 
-- S1 Presentation slides from Prof. Yuming coming soon.
+- S1 [Presentation slides](https://github.com/Alven8816/DEEPER_with_R_workshop_20220908/blob/main/data/Yuming%20Guo_CAR.pdf) from Prof. Yuming.
 
 - S2.1 [Presentation slides](https://github.com/Alven8816/DEEPER_with_R_workshop_20220908/blob/main/data/DEEPER%20with%20R%20workshop.pdf) from Wenhua.
 
-- S2.1 [Tutorial code and illustration](https://alven8816.github.io/DEEPER_with_R_workshop_20220908/) from Wenhua.
+- S2.2 [Tutorial code and illustration](https://alven8816.github.io/DEEPER_with_R_workshop_20220908/) from Wenhua.
 
-- S2.2 Presentation slides from Liam coming soon.
+- S2.3 [Presentation slides](https://github.com/Alven8816/DEEPER_with_R_workshop_20220908/blob/main/data/deep_GUI_workshop_Liam.pdf) from Liam.
 
 
 ### Support or Contact
