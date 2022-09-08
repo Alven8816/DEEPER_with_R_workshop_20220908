@@ -123379,9 +123379,6 @@ Identify the dependence and independence variables
 
 Q: Estimate annual average NO2 in Sydney in 2005-2018
 
-Download the Sydney NO2 data in the
-[CloudStor](https://www.aarnet.edu.au/cloudstor)
-
 Tasks:
 
 1.  Data clean: change the ‘year’ as a factor type and delete variable
@@ -123456,7 +123453,7 @@ performance.
     end_time <- Sys.time()
     end_time - start_time
 
-    ## Time difference of 4.399642 secs
+    ## Time difference of 3.961384 secs
 
     #print(model1$base_ensemble_value)
 
@@ -130106,7 +130103,7 @@ spatial (cluster) or temporal CV
     end_time <- Sys.time()
     end_time - start_time
 
-    ## Time difference of 14.0399 secs
+    ## Time difference of 14.61456 secs
 
     ## when number_cores is missing, it will indicate user to set one based on the operation system.
 

@@ -198,8 +198,6 @@ x <- colnames(envir_example[-c(1, 6)]) # except "date" and "PM2.5"
 
 Q: Estimate annual average NO2 in Sydney in 2005-2018
 
-Download the Sydney NO2 data in the [CloudStor](https://www.aarnet.edu.au/cloudstor)
-
 Tasks:
 
 1.  Data clean: change the 'year' as a factor type and delete variable 'X'
