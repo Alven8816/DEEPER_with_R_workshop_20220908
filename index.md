@@ -13,16 +13,23 @@ Before installation, please make sure:
 -   installed certain dependent R packages: devtools, SuperLearner(&gt;=
     2.0-28)
 
--   installed other suggested R packages: caret, skimr, CAST, ranger,
-    gbm, xgboost, hexbin, (nnls, foreach, splines, gam)
+-   installed other suggested R packages: pacman, caret, skimr, CAST,
+    ranger, gbm, xgboost, hexbin, (nnls, foreach, splines, gam)
 
-The developing version of deeper can be found from
-[github](https://github.com/Alven8816/deeper).
+<!-- -->
 
-Using the following syntax to install:
+    # check the package installation
+    #install.packages("pacman")
+    library(pacman)
+    p_load("devtools","SuperLearner","ranger","CAST","caret","skimr","gbm","xgboost","hexbin")
+
+Using the following syntax to install deeper R package:
 
     library(devtools)
     install_github("Alven8816/deeper")
+
+The developing version of deeper can be found from
+[github](https://github.com/Alven8816/deeper).
 
 ## Activity
 
@@ -123387,7 +123394,24 @@ Tasks:
 
 <!-- -->
 
-    #try it here
+    data_Sydney <- read.csv("C:/Users/yuwen/OneDrive - Monash University/2021 work/workshops/20220908 DEEPER workshop/talk materials/quiz/final data example/training_data.csv")
+
+    data_Sydney$X <- NULL
+    data_Sydney$year <- as.factor(data_Sydney$year)
+
+    # dataset split
+    set.seed(1234)
+    size <-
+      caret::createDataPartition(y = data_Sydney$no2_annual,
+                                 p = 0.9,
+                                 list = FALSE)
+
+    trainset_syd <- data_Sydney[size,]
+    testset_syd <- data_Sydney[-size,]
+    ### Identify the dependence and independence variables
+
+    dependence <- c("no2_annual")
+    independence <- colnames(data_Sydney[-c(1)]) # except "no2_annual"
 
 ## 2. Establish base models
 
@@ -123425,14 +123449,14 @@ performance.
     ## The base models Cross validation result:
     ## 
     ##        SL.ranger_1_All SL.ranger_2_All SL.ranger_3_All
-    ## weight       0.0000000       0.3004660       0.6995340
-    ## R2           0.7978256       0.8749765       0.8752692
-    ## RMSE        35.2163342      23.8228438      23.2379626
+    ## weight       0.0000000       0.2557565       0.7442435
+    ## R2           0.7987171       0.8783410       0.8796137
+    ## RMSE        35.4710237      23.6020355      22.8641344
 
     end_time <- Sys.time()
     end_time - start_time
 
-    ## Time difference of 3.981715 secs
+    ## Time difference of 4.399642 secs
 
     #print(model1$base_ensemble_value)
 
@@ -123475,6514 +123499,6514 @@ SL.ranger\_3\_All
 <tbody>
 <tr>
 <td style="text-align:center;">
-52.90729
+56.49809
 </td>
 <td style="text-align:center;">
-47.68343
+51.33055
 </td>
 <td style="text-align:center;">
-48.097903
+45.266910
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-61.50432
+63.48694
 </td>
 <td style="text-align:center;">
-66.76404
+66.91219
 </td>
 <td style="text-align:center;">
-67.364436
+69.766973
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-68.93616
+65.94418
 </td>
 <td style="text-align:center;">
-77.79895
+66.02193
 </td>
 <td style="text-align:center;">
-62.865959
+66.711069
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-66.66083
+72.25364
 </td>
 <td style="text-align:center;">
-73.91816
+71.17931
 </td>
 <td style="text-align:center;">
-77.260671
+71.107377
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-147.77336
+134.14046
 </td>
 <td style="text-align:center;">
-177.64796
+176.11373
 </td>
 <td style="text-align:center;">
-174.725122
+177.565844
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-56.60838
+60.41963
 </td>
 <td style="text-align:center;">
-51.01905
+48.45826
 </td>
 <td style="text-align:center;">
-49.361001
+48.014687
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-33.09931
+45.25294
 </td>
 <td style="text-align:center;">
-12.80411
+12.59430
 </td>
 <td style="text-align:center;">
-9.325893
+9.329754
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-48.29003
+51.82385
 </td>
 <td style="text-align:center;">
-31.76621
+33.27328
 </td>
 <td style="text-align:center;">
-30.137676
+28.538869
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-34.51388
+42.67627
 </td>
 <td style="text-align:center;">
-12.45769
+11.71277
 </td>
 <td style="text-align:center;">
-9.480370
+9.782546
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-46.81153
+52.51839
 </td>
 <td style="text-align:center;">
-41.73576
+39.46527
 </td>
 <td style="text-align:center;">
-40.255488
+38.939178
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-76.57922
+72.29229
 </td>
 <td style="text-align:center;">
-83.20701
+76.28595
 </td>
 <td style="text-align:center;">
-94.619138
+89.199253
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-118.01439
+122.83103
 </td>
 <td style="text-align:center;">
-120.14862
+114.91375
 </td>
 <td style="text-align:center;">
-115.777299
+113.820424
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-77.54099
+76.98595
 </td>
 <td style="text-align:center;">
-92.21082
+93.88029
 </td>
 <td style="text-align:center;">
-98.350574
+102.572112
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-50.60667
+52.40706
 </td>
 <td style="text-align:center;">
-43.62644
+44.33411
 </td>
 <td style="text-align:center;">
-38.224112
+41.143246
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-50.84177
+64.17659
 </td>
 <td style="text-align:center;">
-39.51859
+38.73399
 </td>
 <td style="text-align:center;">
-47.046864
+41.104041
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-61.31980
+65.38856
 </td>
 <td style="text-align:center;">
-74.68304
+70.36203
 </td>
 <td style="text-align:center;">
-79.410301
+85.726373
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-114.25174
+115.59290
 </td>
 <td style="text-align:center;">
-125.36504
+122.42986
 </td>
 <td style="text-align:center;">
-126.143508
+131.994915
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-66.38027
+65.59899
 </td>
 <td style="text-align:center;">
-50.22741
+43.79735
 </td>
 <td style="text-align:center;">
-38.319707
+41.920069
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-67.24501
+64.51778
 </td>
 <td style="text-align:center;">
-46.24210
+41.13932
 </td>
 <td style="text-align:center;">
-38.705408
+38.391783
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-68.15131
+74.82203
 </td>
 <td style="text-align:center;">
-71.02142
+72.40386
 </td>
 <td style="text-align:center;">
-75.499093
+74.457451
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-59.41377
+55.63642
 </td>
 <td style="text-align:center;">
-52.31946
+52.19000
 </td>
 <td style="text-align:center;">
-56.328120
+57.127304
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-43.31704
+41.52613
 </td>
 <td style="text-align:center;">
-34.68285
+38.67459
 </td>
 <td style="text-align:center;">
-40.729040
+40.791569
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-76.85371
+75.69054
 </td>
 <td style="text-align:center;">
-82.89695
+80.74515
 </td>
 <td style="text-align:center;">
-84.076487
+82.124015
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-55.13421
+54.77563
 </td>
 <td style="text-align:center;">
-57.59617
+54.22071
 </td>
 <td style="text-align:center;">
-51.774518
+54.870441
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-61.44996
+63.73319
 </td>
 <td style="text-align:center;">
-68.86601
+64.81663
 </td>
 <td style="text-align:center;">
-75.456622
+68.780271
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-76.84104
+75.46524
 </td>
 <td style="text-align:center;">
-87.99632
+82.29209
 </td>
 <td style="text-align:center;">
-81.166214
+82.641043
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-38.35934
+42.31028
 </td>
 <td style="text-align:center;">
-23.33436
+22.06149
 </td>
 <td style="text-align:center;">
-21.479807
+21.685224
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-71.73415
+77.15995
 </td>
 <td style="text-align:center;">
-73.45737
+73.35343
 </td>
 <td style="text-align:center;">
-72.761174
+68.645202
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-72.60419
+78.52592
 </td>
 <td style="text-align:center;">
-78.83993
+80.52197
 </td>
 <td style="text-align:center;">
-78.661481
+76.576775
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-74.29798
+75.80534
 </td>
 <td style="text-align:center;">
-74.43367
+74.22312
 </td>
 <td style="text-align:center;">
-75.021041
+73.388128
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-54.44384
+56.07164
 </td>
 <td style="text-align:center;">
-46.58811
+45.56876
 </td>
 <td style="text-align:center;">
-46.398156
+42.498140
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-43.20322
+47.33308
 </td>
 <td style="text-align:center;">
-28.95119
+25.48332
 </td>
 <td style="text-align:center;">
-20.925543
+24.546754
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-30.32529
+34.85189
 </td>
 <td style="text-align:center;">
-12.64981
+13.13182
 </td>
 <td style="text-align:center;">
-12.450677
+13.472103
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-37.80496
+45.56672
 </td>
 <td style="text-align:center;">
-21.16552
+19.44886
 </td>
 <td style="text-align:center;">
-20.026037
+19.458776
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-95.48397
+94.80694
 </td>
 <td style="text-align:center;">
-99.41639
+103.03546
 </td>
 <td style="text-align:center;">
-102.719018
+103.988226
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-108.15718
+109.27217
 </td>
 <td style="text-align:center;">
-125.25930
+126.04456
 </td>
 <td style="text-align:center;">
-127.163827
+128.255261
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-41.52462
+45.49371
 </td>
 <td style="text-align:center;">
-31.19605
+32.17123
 </td>
 <td style="text-align:center;">
-35.021642
+34.798407
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-50.12431
+53.99931
 </td>
 <td style="text-align:center;">
-28.07314
+28.89075
 </td>
 <td style="text-align:center;">
-25.049775
+24.763914
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-155.92021
+167.66319
 </td>
 <td style="text-align:center;">
-210.39137
+213.43560
 </td>
 <td style="text-align:center;">
-217.013712
+226.059166
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-160.42391
+158.58286
 </td>
 <td style="text-align:center;">
-226.62633
+229.59563
 </td>
 <td style="text-align:center;">
-248.278783
+245.328858
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-52.47636
+50.00957
 </td>
 <td style="text-align:center;">
-35.51533
+32.67564
 </td>
 <td style="text-align:center;">
-32.798011
+34.109933
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-33.76330
+33.11929
 </td>
 <td style="text-align:center;">
-13.51609
+12.16144
 </td>
 <td style="text-align:center;">
-12.554357
+12.122868
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-189.38225
+181.59720
 </td>
 <td style="text-align:center;">
-203.86463
+191.06326
 </td>
 <td style="text-align:center;">
-194.383687
+189.613169
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-140.57078
+146.66691
 </td>
 <td style="text-align:center;">
-145.80045
+154.50531
 </td>
 <td style="text-align:center;">
-141.177184
+137.895146
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-68.56822
+66.78175
 </td>
 <td style="text-align:center;">
-52.19759
+49.04938
 </td>
 <td style="text-align:center;">
-44.994897
+44.911336
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-94.78551
+91.87308
 </td>
 <td style="text-align:center;">
-103.14085
+96.91841
 </td>
 <td style="text-align:center;">
-94.274227
+96.031017
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-171.69811
+182.12601
 </td>
 <td style="text-align:center;">
-218.32076
+227.82344
 </td>
 <td style="text-align:center;">
-229.605203
+227.203558
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-84.84879
+87.11107
 </td>
 <td style="text-align:center;">
-88.40957
+95.29229
 </td>
 <td style="text-align:center;">
-87.249051
+90.475640
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-33.98922
+31.82982
 </td>
 <td style="text-align:center;">
-19.83362
+20.20290
 </td>
 <td style="text-align:center;">
-22.200996
+22.127364
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-92.18372
+100.48808
 </td>
 <td style="text-align:center;">
-108.02750
+110.67553
 </td>
 <td style="text-align:center;">
-98.951989
+100.730447
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-30.76255
+26.99448
 </td>
 <td style="text-align:center;">
-14.88427
+16.53736
 </td>
 <td style="text-align:center;">
-14.583394
+18.262836
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-32.72967
+36.78358
 </td>
 <td style="text-align:center;">
-24.64174
+28.56092
 </td>
 <td style="text-align:center;">
-28.015370
+27.618101
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-52.01160
+55.48720
 </td>
 <td style="text-align:center;">
-47.18968
+50.46639
 </td>
 <td style="text-align:center;">
-50.644602
+53.020146
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-77.47841
+74.76032
 </td>
 <td style="text-align:center;">
-80.14794
+82.87465
 </td>
 <td style="text-align:center;">
-67.939511
+77.672819
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-130.25569
+123.26269
 </td>
 <td style="text-align:center;">
-148.99868
+139.37099
 </td>
 <td style="text-align:center;">
-140.617536
+130.232170
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-45.23305
+41.21947
 </td>
 <td style="text-align:center;">
-27.75597
+27.23595
 </td>
 <td style="text-align:center;">
-30.642835
+27.515759
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-49.15515
+39.51719
 </td>
 <td style="text-align:center;">
-35.62627
+36.47873
 </td>
 <td style="text-align:center;">
-38.857120
+36.065680
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-70.06902
+78.34336
 </td>
 <td style="text-align:center;">
-49.28286
+63.41123
 </td>
 <td style="text-align:center;">
-48.118372
+62.857647
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-40.28807
+44.90531
 </td>
 <td style="text-align:center;">
-35.26617
+38.81341
 </td>
 <td style="text-align:center;">
-33.240359
+36.987731
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-43.95139
+44.13261
 </td>
 <td style="text-align:center;">
-33.77666
+31.18710
 </td>
 <td style="text-align:center;">
-28.972720
+32.835033
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-35.71915
+34.53789
 </td>
 <td style="text-align:center;">
-25.05454
+25.77859
 </td>
 <td style="text-align:center;">
-33.411696
+30.189408
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-45.29626
+39.35852
 </td>
 <td style="text-align:center;">
-23.49613
+22.88444
 </td>
 <td style="text-align:center;">
-17.730842
+17.395702
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-44.73652
+39.68527
 </td>
 <td style="text-align:center;">
-25.44955
+28.78292
 </td>
 <td style="text-align:center;">
-25.395886
+24.384438
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-51.37124
+44.65360
 </td>
 <td style="text-align:center;">
-30.60476
+33.97907
 </td>
 <td style="text-align:center;">
-34.148058
+29.058972
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-86.66147
+85.44400
 </td>
 <td style="text-align:center;">
-82.66285
+90.22097
 </td>
 <td style="text-align:center;">
-84.019526
+83.486711
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-45.12952
+43.37584
 </td>
 <td style="text-align:center;">
-28.53467
+27.31407
 </td>
 <td style="text-align:center;">
-28.012083
+26.093867
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-59.50346
+56.41578
 </td>
 <td style="text-align:center;">
-50.87844
+51.21462
 </td>
 <td style="text-align:center;">
-53.256789
+52.866966
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-81.56859
+77.60482
 </td>
 <td style="text-align:center;">
-91.23835
+88.99242
 </td>
 <td style="text-align:center;">
-98.045161
+93.554320
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-73.83644
+79.42716
 </td>
 <td style="text-align:center;">
-80.88013
+80.56329
 </td>
 <td style="text-align:center;">
-75.713413
+74.387986
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-82.62798
+79.33968
 </td>
 <td style="text-align:center;">
-93.56027
+97.58074
 </td>
 <td style="text-align:center;">
-97.898431
+98.239941
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-74.05306
+71.30890
 </td>
 <td style="text-align:center;">
-86.96738
+87.53217
 </td>
 <td style="text-align:center;">
-88.959774
+90.493028
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-66.57397
+61.77790
 </td>
 <td style="text-align:center;">
-59.60203
+60.10433
 </td>
 <td style="text-align:center;">
-55.575527
+57.426900
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-82.25180
+79.82339
 </td>
 <td style="text-align:center;">
-98.06337
+99.87732
 </td>
 <td style="text-align:center;">
-99.096358
+97.814097
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-54.16788
+54.19012
 </td>
 <td style="text-align:center;">
-35.18387
+33.86454
 </td>
 <td style="text-align:center;">
-37.662067
+34.170345
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-80.19337
+82.52994
 </td>
 <td style="text-align:center;">
-81.17933
+81.31936
 </td>
 <td style="text-align:center;">
-85.624361
+88.651983
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-54.16082
+56.62296
 </td>
 <td style="text-align:center;">
-37.86441
+39.25728
 </td>
 <td style="text-align:center;">
-40.906473
+36.759873
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-45.87633
+57.02225
 </td>
 <td style="text-align:center;">
-23.38395
+23.75908
 </td>
 <td style="text-align:center;">
-22.063100
+21.658504
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-57.30298
+55.59667
 </td>
 <td style="text-align:center;">
-46.11336
+42.86384
 </td>
 <td style="text-align:center;">
-43.493088
+47.722871
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-36.25926
+38.08865
 </td>
 <td style="text-align:center;">
-15.15914
+15.98281
 </td>
 <td style="text-align:center;">
-15.043756
+13.473508
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-37.62966
+38.52606
 </td>
 <td style="text-align:center;">
-20.26858
+20.65193
 </td>
 <td style="text-align:center;">
-20.038834
+20.411231
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-72.59012
+64.52225
 </td>
 <td style="text-align:center;">
-62.56043
+57.65914
 </td>
 <td style="text-align:center;">
-63.701406
+60.341081
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-42.23666
+42.13653
 </td>
 <td style="text-align:center;">
-13.04538
+12.62164
 </td>
 <td style="text-align:center;">
-12.756268
+12.194464
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-161.79607
+164.90380
 </td>
 <td style="text-align:center;">
-177.10679
+174.47567
 </td>
 <td style="text-align:center;">
-167.206665
+179.472041
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-67.03312
+66.91114
 </td>
 <td style="text-align:center;">
-55.89395
+61.74771
 </td>
 <td style="text-align:center;">
-56.096484
+53.094351
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-32.28679
+28.61523
 </td>
 <td style="text-align:center;">
-14.20041
+13.34935
 </td>
 <td style="text-align:center;">
-11.925240
+11.083046
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-59.95014
+56.43641
 </td>
 <td style="text-align:center;">
-43.17584
+46.16039
 </td>
 <td style="text-align:center;">
-47.191753
+45.600093
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-87.91270
+88.38400
 </td>
 <td style="text-align:center;">
-82.23208
+91.77215
 </td>
 <td style="text-align:center;">
-84.799939
+92.879043
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-36.18625
+32.19246
 </td>
 <td style="text-align:center;">
-16.55167
+14.68933
 </td>
 <td style="text-align:center;">
-12.085728
+14.897877
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-67.40581
+57.58081
 </td>
 <td style="text-align:center;">
-55.38286
+57.67847
 </td>
 <td style="text-align:center;">
-63.661499
+75.046697
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-63.59756
+65.32363
 </td>
 <td style="text-align:center;">
-54.12096
+52.95903
 </td>
 <td style="text-align:center;">
-57.118048
+58.013916
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-45.25833
+43.76339
 </td>
 <td style="text-align:center;">
-34.00900
+30.93266
 </td>
 <td style="text-align:center;">
-32.683286
+31.963849
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-200.51917
+210.51461
 </td>
 <td style="text-align:center;">
-246.03655
+260.47816
 </td>
 <td style="text-align:center;">
-251.800512
+257.838580
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-212.81467
+217.00054
 </td>
 <td style="text-align:center;">
-254.27105
+262.32233
 </td>
 <td style="text-align:center;">
-267.598031
+263.922151
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-129.17832
+128.92399
 </td>
 <td style="text-align:center;">
-151.00168
+138.93380
 </td>
 <td style="text-align:center;">
-148.498597
+151.405080
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-57.22031
+57.98795
 </td>
 <td style="text-align:center;">
-47.78417
+44.56101
 </td>
 <td style="text-align:center;">
-50.907877
+48.146399
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-98.62923
+99.37478
 </td>
 <td style="text-align:center;">
-140.39313
+149.55361
 </td>
 <td style="text-align:center;">
-145.660595
+148.844955
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-70.92163
+68.40441
 </td>
 <td style="text-align:center;">
-94.67581
+94.10089
 </td>
 <td style="text-align:center;">
-91.606165
+94.608091
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-35.40654
+34.36345
 </td>
 <td style="text-align:center;">
-24.46064
+21.56690
 </td>
 <td style="text-align:center;">
-17.696338
+19.462268
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-86.28994
+88.09854
 </td>
 <td style="text-align:center;">
-114.90744
+117.99222
 </td>
 <td style="text-align:center;">
-122.187750
+120.477903
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-37.30006
+34.87620
 </td>
 <td style="text-align:center;">
-23.13804
+27.84232
 </td>
 <td style="text-align:center;">
-37.271466
+40.893984
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-95.07506
+90.21841
 </td>
 <td style="text-align:center;">
-143.68737
+140.07343
 </td>
 <td style="text-align:center;">
-144.477001
+145.671370
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-42.16270
+42.35691
 </td>
 <td style="text-align:center;">
-24.08191
+28.46574
 </td>
 <td style="text-align:center;">
-21.887100
+21.049461
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-46.36713
+43.27073
 </td>
 <td style="text-align:center;">
-39.16763
+36.49475
 </td>
 <td style="text-align:center;">
-43.128379
+44.339538
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-91.93583
+93.19864
 </td>
 <td style="text-align:center;">
-125.35240
+123.85466
 </td>
 <td style="text-align:center;">
-127.839721
+132.297688
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-37.00742
+36.52377
 </td>
 <td style="text-align:center;">
-27.00479
+31.31007
 </td>
 <td style="text-align:center;">
-26.416999
+29.394036
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-87.95103
+82.14917
 </td>
 <td style="text-align:center;">
-104.55546
+118.14819
 </td>
 <td style="text-align:center;">
-121.085786
+126.316104
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-35.60871
+35.47802
 </td>
 <td style="text-align:center;">
-35.66183
+32.29011
 </td>
 <td style="text-align:center;">
-38.655416
+41.768706
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-44.86157
+45.08495
 </td>
 <td style="text-align:center;">
-43.44686
+44.92049
 </td>
 <td style="text-align:center;">
-48.311053
+47.844980
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-71.38402
+72.82761
 </td>
 <td style="text-align:center;">
-85.51722
+85.27726
 </td>
 <td style="text-align:center;">
-87.495159
+84.371829
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-74.50038
+74.37904
 </td>
 <td style="text-align:center;">
-78.99415
+81.29847
 </td>
 <td style="text-align:center;">
-78.702531
+71.840186
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-56.04009
+59.49483
 </td>
 <td style="text-align:center;">
-60.33959
+59.33431
 </td>
 <td style="text-align:center;">
-70.055777
+62.810351
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-38.73404
+36.73872
 </td>
 <td style="text-align:center;">
-28.39303
+27.56856
 </td>
 <td style="text-align:center;">
-28.093929
+27.111840
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-42.16780
+42.91911
 </td>
 <td style="text-align:center;">
-24.42629
+26.93546
 </td>
 <td style="text-align:center;">
-19.049038
+18.570278
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-70.79258
+69.63384
 </td>
 <td style="text-align:center;">
-78.90585
+80.05466
 </td>
 <td style="text-align:center;">
-78.123042
+78.825786
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-71.90366
+73.87253
 </td>
 <td style="text-align:center;">
-84.96353
+83.72018
 </td>
 <td style="text-align:center;">
-84.152303
+82.348193
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-40.21674
+49.17052
 </td>
 <td style="text-align:center;">
-33.73888
+31.27601
 </td>
 <td style="text-align:center;">
-30.423234
+30.266050
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-33.81954
+34.68808
 </td>
 <td style="text-align:center;">
-14.72905
+13.71875
 </td>
 <td style="text-align:center;">
-13.218186
+13.718703
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-38.46136
+40.35069
 </td>
 <td style="text-align:center;">
-19.99272
+18.47865
 </td>
 <td style="text-align:center;">
-19.076584
+16.037120
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-45.64007
+41.81378
 </td>
 <td style="text-align:center;">
-30.33636
+26.32004
 </td>
 <td style="text-align:center;">
-24.593549
+21.842824
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-35.94235
+38.08506
 </td>
 <td style="text-align:center;">
-20.03753
+20.02899
 </td>
 <td style="text-align:center;">
-14.205444
+13.725341
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-84.58557
+85.38816
 </td>
 <td style="text-align:center;">
-99.13429
+107.13746
 </td>
 <td style="text-align:center;">
-100.972722
+96.056968
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-74.79503
+72.96907
 </td>
 <td style="text-align:center;">
-87.27481
+87.95920
 </td>
 <td style="text-align:center;">
-75.257810
+82.628019
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-36.66836
+33.96189
 </td>
 <td style="text-align:center;">
-21.72453
+19.97991
 </td>
 <td style="text-align:center;">
-28.349029
+27.237420
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-39.46813
+31.89430
 </td>
 <td style="text-align:center;">
-17.36375
+14.82671
 </td>
 <td style="text-align:center;">
-13.464129
+14.215039
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-37.74917
+31.93448
 </td>
 <td style="text-align:center;">
-18.10142
+19.65339
 </td>
 <td style="text-align:center;">
-18.046635
+17.503726
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-101.92705
+104.48794
 </td>
 <td style="text-align:center;">
-160.64492
+148.51682
 </td>
 <td style="text-align:center;">
-180.247223
+177.245011
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-145.33625
+162.89342
 </td>
 <td style="text-align:center;">
-218.89521
+234.87536
 </td>
 <td style="text-align:center;">
-264.995857
+253.437789
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-59.24711
+52.76488
 </td>
 <td style="text-align:center;">
-73.99469
+63.44233
 </td>
 <td style="text-align:center;">
-79.960996
+76.990906
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-100.92368
+105.42117
 </td>
 <td style="text-align:center;">
-142.41200
+131.75380
 </td>
 <td style="text-align:center;">
-151.906054
+134.447758
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-96.80974
+81.56940
 </td>
 <td style="text-align:center;">
-89.14310
+85.48875
 </td>
 <td style="text-align:center;">
-89.469436
+82.100015
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-49.36224
+38.01621
 </td>
 <td style="text-align:center;">
-42.03665
+39.01528
 </td>
 <td style="text-align:center;">
-55.736278
+51.345034
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-36.44320
+33.46549
 </td>
 <td style="text-align:center;">
-22.23603
+17.61228
 </td>
 <td style="text-align:center;">
-16.465357
+16.848691
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-62.25275
+68.11661
 </td>
 <td style="text-align:center;">
-67.15671
+69.42305
 </td>
 <td style="text-align:center;">
-66.306032
+65.737633
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-80.63003
+75.62129
 </td>
 <td style="text-align:center;">
-100.66135
+98.82936
 </td>
 <td style="text-align:center;">
-99.786877
+90.481190
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-90.97186
+99.96448
 </td>
 <td style="text-align:center;">
-140.73698
+142.10185
 </td>
 <td style="text-align:center;">
-140.771006
+129.873668
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-32.35930
+29.53003
 </td>
 <td style="text-align:center;">
-22.97876
+19.73432
 </td>
 <td style="text-align:center;">
-20.444869
+22.593529
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-28.94886
+26.38640
 </td>
 <td style="text-align:center;">
-17.29343
+16.55995
 </td>
 <td style="text-align:center;">
-13.696618
+16.272495
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-51.10704
+50.36721
 </td>
 <td style="text-align:center;">
-49.11276
+50.98384
 </td>
 <td style="text-align:center;">
-48.127624
+46.265950
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-70.10276
+62.82814
 </td>
 <td style="text-align:center;">
-87.38924
+84.80238
 </td>
 <td style="text-align:center;">
-85.698223
+87.426069
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-41.36217
+38.02421
 </td>
 <td style="text-align:center;">
-36.63151
+31.98475
 </td>
 <td style="text-align:center;">
-29.789616
+30.462460
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-42.14147
+42.51951
 </td>
 <td style="text-align:center;">
-32.14010
+34.89753
 </td>
 <td style="text-align:center;">
-28.013949
+28.248030
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-43.47910
+43.44536
 </td>
 <td style="text-align:center;">
-37.11069
+39.61494
 </td>
 <td style="text-align:center;">
-39.220460
+36.464093
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-42.46755
+41.75602
 </td>
 <td style="text-align:center;">
-30.51917
+32.12937
 </td>
 <td style="text-align:center;">
-33.399399
+33.584704
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-72.75682
+77.44301
 </td>
 <td style="text-align:center;">
-88.75314
+92.36985
 </td>
 <td style="text-align:center;">
-90.014757
+95.718686
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-50.38400
+48.95483
 </td>
 <td style="text-align:center;">
-45.71525
+51.45422
 </td>
 <td style="text-align:center;">
-59.406720
+49.230253
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-72.73795
+72.22878
 </td>
 <td style="text-align:center;">
-82.34297
+83.11826
 </td>
 <td style="text-align:center;">
-83.352537
+75.467921
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-47.56154
+45.74878
 </td>
 <td style="text-align:center;">
-30.35849
+36.78305
 </td>
 <td style="text-align:center;">
-30.584114
+30.629117
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-46.67711
+52.16064
 </td>
 <td style="text-align:center;">
-38.25555
+38.33577
 </td>
 <td style="text-align:center;">
-34.061365
+33.081442
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-73.99963
+75.18410
 </td>
 <td style="text-align:center;">
-87.14513
+87.11819
 </td>
 <td style="text-align:center;">
-86.696532
+86.681012
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-39.24296
+37.37859
 </td>
 <td style="text-align:center;">
-25.10785
+28.86340
 </td>
 <td style="text-align:center;">
-20.660328
+24.688146
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-50.68520
+51.03778
 </td>
 <td style="text-align:center;">
-42.16072
+41.33748
 </td>
 <td style="text-align:center;">
-45.171422
+38.657929
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-38.01708
+37.50653
 </td>
 <td style="text-align:center;">
-17.72734
+16.20889
 </td>
 <td style="text-align:center;">
-15.600762
+17.395782
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-52.66186
+48.32068
 </td>
 <td style="text-align:center;">
-26.46287
+32.75417
 </td>
 <td style="text-align:center;">
-22.294305
+20.869246
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-53.64612
+57.93428
 </td>
 <td style="text-align:center;">
-37.65619
+37.84150
 </td>
 <td style="text-align:center;">
-34.501812
+32.388868
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-41.35966
+42.67899
 </td>
 <td style="text-align:center;">
-17.61601
+17.01051
 </td>
 <td style="text-align:center;">
-13.772865
+13.086357
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-43.87514
+41.42416
 </td>
 <td style="text-align:center;">
-20.18982
+18.45087
 </td>
 <td style="text-align:center;">
-14.345688
+13.801319
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-98.78502
+107.26689
 </td>
 <td style="text-align:center;">
-118.59694
+110.00670
 </td>
 <td style="text-align:center;">
-118.551677
+123.011197
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-108.67282
+122.24577
 </td>
 <td style="text-align:center;">
-155.41556
+154.43277
 </td>
 <td style="text-align:center;">
-168.834207
+169.783995
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-43.39810
+40.97736
 </td>
 <td style="text-align:center;">
-30.37421
+32.01070
 </td>
 <td style="text-align:center;">
-32.543053
+32.813298
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-94.45187
+101.46235
 </td>
 <td style="text-align:center;">
-129.24240
+134.01524
 </td>
 <td style="text-align:center;">
-149.754326
+149.652539
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-48.29873
+48.36804
 </td>
 <td style="text-align:center;">
-34.96912
+32.76380
 </td>
 <td style="text-align:center;">
-32.964571
+33.792465
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-86.65174
+85.86284
 </td>
 <td style="text-align:center;">
-103.70768
+109.39386
 </td>
 <td style="text-align:center;">
-104.789527
+107.443358
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-43.88994
+37.57152
 </td>
 <td style="text-align:center;">
-27.03702
+29.66900
 </td>
 <td style="text-align:center;">
-28.973018
+27.035228
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-42.65770
+43.64623
 </td>
 <td style="text-align:center;">
-33.85173
+36.81352
 </td>
 <td style="text-align:center;">
-34.152103
+34.229129
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-148.69565
+134.84245
 </td>
 <td style="text-align:center;">
-165.13475
+159.55686
 </td>
 <td style="text-align:center;">
-166.322157
+161.790424
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-68.53770
+55.77917
 </td>
 <td style="text-align:center;">
-46.28254
+51.52220
 </td>
 <td style="text-align:center;">
-43.195512
+50.334897
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-89.80837
+89.19302
 </td>
 <td style="text-align:center;">
-87.57561
+90.40655
 </td>
 <td style="text-align:center;">
-83.544919
+85.335739
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-63.87489
+63.55562
 </td>
 <td style="text-align:center;">
-58.68093
+59.75361
 </td>
 <td style="text-align:center;">
-57.041988
+61.218773
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-49.98783
+55.65714
 </td>
 <td style="text-align:center;">
-36.99367
+33.44684
 </td>
 <td style="text-align:center;">
-33.463805
+34.023833
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-98.91646
+100.02507
 </td>
 <td style="text-align:center;">
-105.73098
+110.96556
 </td>
 <td style="text-align:center;">
-108.508220
+104.566016
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-38.82585
+48.46033
 </td>
 <td style="text-align:center;">
-20.03257
+18.52201
 </td>
 <td style="text-align:center;">
-14.797792
+13.450575
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-98.26586
+96.17479
 </td>
 <td style="text-align:center;">
-124.20895
+117.85244
 </td>
 <td style="text-align:center;">
-121.791258
+117.206948
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-53.50298
+48.86240
 </td>
 <td style="text-align:center;">
-43.94246
+38.92199
 </td>
 <td style="text-align:center;">
-39.640012
+38.723754
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-138.53863
+132.80987
 </td>
 <td style="text-align:center;">
-183.14903
+166.41966
 </td>
 <td style="text-align:center;">
-177.721760
+189.343421
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-47.02768
+46.77852
 </td>
 <td style="text-align:center;">
-45.08853
+41.52485
 </td>
 <td style="text-align:center;">
-41.677383
+38.940187
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-59.83168
+59.44032
 </td>
 <td style="text-align:center;">
-38.07882
+40.88706
 </td>
 <td style="text-align:center;">
-40.470291
+40.653754
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-98.21570
+106.12433
 </td>
 <td style="text-align:center;">
-110.96851
+107.59931
 </td>
 <td style="text-align:center;">
-108.208384
+107.305797
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-64.40761
+62.87243
 </td>
 <td style="text-align:center;">
-63.87383
+63.18201
 </td>
 <td style="text-align:center;">
-63.605830
+63.669033
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-58.14886
+63.71549
 </td>
 <td style="text-align:center;">
-68.93018
+68.67902
 </td>
 <td style="text-align:center;">
-67.769405
+71.670334
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-60.18862
+60.28252
 </td>
 <td style="text-align:center;">
-49.98648
+53.36899
 </td>
 <td style="text-align:center;">
-49.332634
+49.041361
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-58.67930
+60.27784
 </td>
 <td style="text-align:center;">
-56.92899
+55.38750
 </td>
 <td style="text-align:center;">
-58.393838
+56.394532
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-72.71115
+66.82771
 </td>
 <td style="text-align:center;">
-70.46810
+68.15633
 </td>
 <td style="text-align:center;">
-67.611627
+72.171665
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-46.55613
+38.63732
 </td>
 <td style="text-align:center;">
-27.64197
+25.99493
 </td>
 <td style="text-align:center;">
-27.797371
+28.749049
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-86.61833
+84.80754
 </td>
 <td style="text-align:center;">
-92.33386
+94.70655
 </td>
 <td style="text-align:center;">
-92.221249
+93.928076
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-64.04464
+65.78043
 </td>
 <td style="text-align:center;">
-63.76460
+63.01865
 </td>
 <td style="text-align:center;">
-60.241160
+62.879443
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-43.17761
+43.71032
 </td>
 <td style="text-align:center;">
-33.48343
+34.14589
 </td>
 <td style="text-align:center;">
-32.755850
+32.351948
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-40.34151
+40.44143
 </td>
 <td style="text-align:center;">
-29.22714
+26.60939
 </td>
 <td style="text-align:center;">
-27.035520
+26.781221
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-76.84775
+76.72143
 </td>
 <td style="text-align:center;">
-75.99944
+76.98868
 </td>
 <td style="text-align:center;">
-78.712912
+74.233692
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-85.95564
+85.08010
 </td>
 <td style="text-align:center;">
-108.53035
+109.55488
 </td>
 <td style="text-align:center;">
-112.542707
+113.020215
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-62.28160
+60.87424
 </td>
 <td style="text-align:center;">
-58.54417
+58.65425
 </td>
 <td style="text-align:center;">
-62.523643
+64.755630
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-71.42099
+69.79315
 </td>
 <td style="text-align:center;">
-51.61510
+54.61233
 </td>
 <td style="text-align:center;">
-50.429018
+50.286259
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-47.34515
+45.53425
 </td>
 <td style="text-align:center;">
-39.22449
+38.47250
 </td>
 <td style="text-align:center;">
-38.901539
+39.896637
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-32.89288
+41.39169
 </td>
 <td style="text-align:center;">
-20.50732
+18.49332
 </td>
 <td style="text-align:center;">
-17.153195
+17.799352
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-49.97010
+49.21664
 </td>
 <td style="text-align:center;">
-30.08989
+27.04858
 </td>
 <td style="text-align:center;">
-27.554761
+24.472968
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-44.62391
+47.93258
 </td>
 <td style="text-align:center;">
-31.27098
+30.10227
 </td>
 <td style="text-align:center;">
-27.404267
+28.945636
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-95.46830
+101.39247
 </td>
 <td style="text-align:center;">
-100.65343
+108.55192
 </td>
 <td style="text-align:center;">
-105.761463
+103.056844
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-119.05692
+127.91323
 </td>
 <td style="text-align:center;">
-121.84573
+128.74540
 </td>
 <td style="text-align:center;">
-126.128477
+129.134962
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-107.30993
+110.32010
 </td>
 <td style="text-align:center;">
-121.68109
+120.60847
 </td>
 <td style="text-align:center;">
-114.945498
+114.132684
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-33.18137
+39.93142
 </td>
 <td style="text-align:center;">
-16.44847
+16.91785
 </td>
 <td style="text-align:center;">
-15.971239
+15.834610
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-169.91716
+182.20687
 </td>
 <td style="text-align:center;">
-211.42714
+221.14122
 </td>
 <td style="text-align:center;">
-219.130853
+219.658007
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-25.86083
+25.81552
 </td>
 <td style="text-align:center;">
-10.94034
+12.92958
 </td>
 <td style="text-align:center;">
-10.975065
+10.705038
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-31.36787
+32.27753
 </td>
 <td style="text-align:center;">
-15.96050
+17.62706
 </td>
 <td style="text-align:center;">
-15.156102
+16.090280
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-68.64733
+75.05470
 </td>
 <td style="text-align:center;">
-62.40025
+57.64899
 </td>
 <td style="text-align:center;">
-60.894819
+57.879846
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-83.61768
+83.37467
 </td>
 <td style="text-align:center;">
-76.74386
+76.38801
 </td>
 <td style="text-align:center;">
-77.439469
+75.377489
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-135.35106
+130.10850
 </td>
 <td style="text-align:center;">
-145.31474
+146.82425
 </td>
 <td style="text-align:center;">
-149.417475
+145.062650
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-165.28890
+179.61591
 </td>
 <td style="text-align:center;">
-203.26394
+195.19553
 </td>
 <td style="text-align:center;">
-197.525210
+202.751540
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-59.47958
+51.61553
 </td>
 <td style="text-align:center;">
-37.68318
+36.40176
 </td>
 <td style="text-align:center;">
-34.689301
+35.593917
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-85.80762
+77.46601
 </td>
 <td style="text-align:center;">
-104.51287
+107.73323
 </td>
 <td style="text-align:center;">
-111.030484
+113.118097
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-168.28018
+185.72087
 </td>
 <td style="text-align:center;">
-157.14198
+153.12256
 </td>
 <td style="text-align:center;">
-140.464680
+149.031250
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-59.55661
+54.75973
 </td>
 <td style="text-align:center;">
-66.84509
+68.49906
 </td>
 <td style="text-align:center;">
-71.693696
+70.817572
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-82.93686
+75.91078
 </td>
 <td style="text-align:center;">
-77.12856
+83.00848
 </td>
 <td style="text-align:center;">
-76.979683
+77.379362
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-160.70793
+167.79782
 </td>
 <td style="text-align:center;">
-175.41308
+170.47239
 </td>
 <td style="text-align:center;">
-176.114538
+174.873963
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-36.85261
+35.23107
 </td>
 <td style="text-align:center;">
-33.59314
+34.81681
 </td>
 <td style="text-align:center;">
-34.080037
+33.723816
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-32.52994
+31.07619
 </td>
 <td style="text-align:center;">
-14.35890
+14.50717
 </td>
 <td style="text-align:center;">
-11.467237
+11.303872
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-81.91311
+83.11741
 </td>
 <td style="text-align:center;">
-84.72851
+85.05913
 </td>
 <td style="text-align:center;">
-82.283996
+85.361393
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-70.45577
+77.08872
 </td>
 <td style="text-align:center;">
-86.97024
+85.83032
 </td>
 <td style="text-align:center;">
-87.693882
+88.060370
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-89.33872
+101.04396
 </td>
 <td style="text-align:center;">
-104.68613
+106.54432
 </td>
 <td style="text-align:center;">
-95.581554
+102.817857
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-49.07205
+46.99723
 </td>
 <td style="text-align:center;">
-41.10090
+42.75893
 </td>
 <td style="text-align:center;">
-39.383132
+40.492993
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-96.02942
+96.61249
 </td>
 <td style="text-align:center;">
-118.95880
+119.41718
 </td>
 <td style="text-align:center;">
-122.209429
+122.484382
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-27.82954
+21.36012
 </td>
 <td style="text-align:center;">
-12.68797
+13.59604
 </td>
 <td style="text-align:center;">
-11.527510
+13.968886
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-35.32205
+36.81455
 </td>
 <td style="text-align:center;">
-31.67908
+32.29445
 </td>
 <td style="text-align:center;">
-30.713994
+32.717199
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-44.57069
+44.56447
 </td>
 <td style="text-align:center;">
-32.08204
+33.04921
 </td>
 <td style="text-align:center;">
-28.734935
+30.798212
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-122.25987
+118.50717
 </td>
 <td style="text-align:center;">
-134.16639
+122.65494
 </td>
 <td style="text-align:center;">
-121.417383
+113.709456
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-30.52385
+20.41625
 </td>
 <td style="text-align:center;">
-11.38855
+11.99725
 </td>
 <td style="text-align:center;">
-9.020298
+8.620976
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-35.92845
+31.40190
 </td>
 <td style="text-align:center;">
-11.93042
+13.12926
 </td>
 <td style="text-align:center;">
-7.054302
+7.938180
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-46.66015
+36.31176
 </td>
 <td style="text-align:center;">
-21.74218
+21.18561
 </td>
 <td style="text-align:center;">
-13.135510
+13.177610
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-37.15176
+27.87917
 </td>
 <td style="text-align:center;">
-20.51120
+16.97547
 </td>
 <td style="text-align:center;">
-15.268946
+17.141578
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-24.63193
+22.84588
 </td>
 <td style="text-align:center;">
-12.09882
+11.80756
 </td>
 <td style="text-align:center;">
-11.162678
+11.294313
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-116.76058
+117.77931
 </td>
 <td style="text-align:center;">
-162.73062
+154.56808
 </td>
 <td style="text-align:center;">
-164.220445
+159.259265
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-49.18105
+42.84268
 </td>
 <td style="text-align:center;">
-31.99141
+31.25770
 </td>
 <td style="text-align:center;">
-29.469842
+31.831928
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-43.24907
+39.69615
 </td>
 <td style="text-align:center;">
-40.37600
+31.30438
 </td>
 <td style="text-align:center;">
-32.346903
+27.460348
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-81.17289
+68.42027
 </td>
 <td style="text-align:center;">
-68.77850
+70.81281
 </td>
 <td style="text-align:center;">
-63.542737
+65.928452
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-44.90206
+38.40259
 </td>
 <td style="text-align:center;">
-20.10253
+20.00478
 </td>
 <td style="text-align:center;">
-16.884475
+17.049679
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-58.02105
+52.65839
 </td>
 <td style="text-align:center;">
-38.77599
+41.75282
 </td>
 <td style="text-align:center;">
-42.676948
+47.142334
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-87.20930
+88.81197
 </td>
 <td style="text-align:center;">
-90.28761
+95.00728
 </td>
 <td style="text-align:center;">
-87.607378
+96.556227
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-101.21346
+103.85406
 </td>
 <td style="text-align:center;">
-120.68200
+123.63341
 </td>
 <td style="text-align:center;">
-125.104828
+121.635431
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-46.42151
+46.52599
 </td>
 <td style="text-align:center;">
-27.44981
+32.59010
 </td>
 <td style="text-align:center;">
-29.370933
+24.588402
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-73.45587
+81.14474
 </td>
 <td style="text-align:center;">
-77.92302
+78.98903
 </td>
 <td style="text-align:center;">
-76.962575
+76.327670
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-97.99210
+96.74128
 </td>
 <td style="text-align:center;">
-90.70139
+83.65105
 </td>
 <td style="text-align:center;">
-86.140173
+82.939459
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-41.36223
+38.66591
 </td>
 <td style="text-align:center;">
-27.29234
+28.70022
 </td>
 <td style="text-align:center;">
-25.180265
+25.924392
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-58.38990
+58.88258
 </td>
 <td style="text-align:center;">
-59.18821
+61.23413
 </td>
 <td style="text-align:center;">
-61.290278
+62.563108
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-52.97230
+54.63788
 </td>
 <td style="text-align:center;">
-55.73221
+55.44879
 </td>
 <td style="text-align:center;">
-57.169889
+55.975326
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-68.96038
+68.92271
 </td>
 <td style="text-align:center;">
-53.30005
+59.56154
 </td>
 <td style="text-align:center;">
-57.753012
+52.732179
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-48.16905
+44.22639
 </td>
 <td style="text-align:center;">
-28.30125
+28.99457
 </td>
 <td style="text-align:center;">
-27.982415
+27.540136
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-88.40517
+84.88796
 </td>
 <td style="text-align:center;">
-95.54248
+94.57846
 </td>
 <td style="text-align:center;">
-98.349137
+100.064082
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-83.41641
+79.81063
 </td>
 <td style="text-align:center;">
-90.12801
+91.78387
 </td>
 <td style="text-align:center;">
-91.328838
+92.080248
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-76.63574
+78.18275
 </td>
 <td style="text-align:center;">
-74.52430
+79.15728
 </td>
 <td style="text-align:center;">
-72.846153
+75.102113
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-90.41827
+85.66089
 </td>
 <td style="text-align:center;">
-90.75320
+90.59177
 </td>
 <td style="text-align:center;">
-93.143876
+88.919432
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-89.51385
+87.66642
 </td>
 <td style="text-align:center;">
-89.35100
+89.28409
 </td>
 <td style="text-align:center;">
-88.778528
+89.842559
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-61.22156
+64.75713
 </td>
 <td style="text-align:center;">
-76.57463
+79.58299
 </td>
 <td style="text-align:center;">
-77.586606
+76.201764
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-92.62295
+89.95548
 </td>
 <td style="text-align:center;">
-85.56750
+88.80482
 </td>
 <td style="text-align:center;">
-85.302733
+85.359676
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-78.91029
+76.15850
 </td>
 <td style="text-align:center;">
-61.18750
+63.94091
 </td>
 <td style="text-align:center;">
-62.400628
+63.773575
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-39.19169
+39.49092
 </td>
 <td style="text-align:center;">
-21.36522
+23.37055
 </td>
 <td style="text-align:center;">
-22.272502
+23.072563
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-33.06378
+34.85181
 </td>
 <td style="text-align:center;">
-16.92939
+17.55094
 </td>
 <td style="text-align:center;">
-17.443148
+17.856276
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-46.71686
+45.28212
 </td>
 <td style="text-align:center;">
-24.20535
+27.48015
 </td>
 <td style="text-align:center;">
-26.067229
+27.107435
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-39.24519
+35.31201
 </td>
 <td style="text-align:center;">
-22.04959
+22.19061
 </td>
 <td style="text-align:center;">
-22.226295
+21.937382
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-47.67153
+38.99422
 </td>
 <td style="text-align:center;">
-22.23587
+23.45482
 </td>
 <td style="text-align:center;">
-22.584255
+21.299863
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-104.38253
+104.05006
 </td>
 <td style="text-align:center;">
-120.48630
+119.65833
 </td>
 <td style="text-align:center;">
-127.583402
+121.604718
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-163.84291
+161.74090
 </td>
 <td style="text-align:center;">
-168.64641
+174.62491
 </td>
 <td style="text-align:center;">
-168.045414
+182.021123
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-161.18739
+164.09534
 </td>
 <td style="text-align:center;">
-191.45432
+192.27552
 </td>
 <td style="text-align:center;">
-194.402741
+194.430751
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-58.22265
+52.77131
 </td>
 <td style="text-align:center;">
-45.80389
+46.27697
 </td>
 <td style="text-align:center;">
-44.832320
+45.354203
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-85.56208
+80.55406
 </td>
 <td style="text-align:center;">
-82.97467
+84.52684
 </td>
 <td style="text-align:center;">
-87.894179
+94.286065
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-28.93101
+26.22734
 </td>
 <td style="text-align:center;">
-10.36282
+10.58863
 </td>
 <td style="text-align:center;">
-8.424232
+8.588109
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-76.20377
+71.60901
 </td>
 <td style="text-align:center;">
-91.90521
+88.36421
 </td>
 <td style="text-align:center;">
-89.306037
+93.765207
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-197.25688
+192.77350
 </td>
 <td style="text-align:center;">
-239.88527
+239.92434
 </td>
 <td style="text-align:center;">
-241.820421
+237.240429
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-56.02292
+55.36913
 </td>
 <td style="text-align:center;">
-59.76516
+59.92930
 </td>
 <td style="text-align:center;">
-63.721187
+64.428617
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-56.92318
+59.91872
 </td>
 <td style="text-align:center;">
-49.83084
+52.24247
 </td>
 <td style="text-align:center;">
-51.017764
+47.278994
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-109.55242
+104.22416
 </td>
 <td style="text-align:center;">
-165.09535
+144.59913
 </td>
 <td style="text-align:center;">
-165.250777
+173.730969
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-51.46370
+49.92782
 </td>
 <td style="text-align:center;">
-43.01604
+37.99432
 </td>
 <td style="text-align:center;">
-39.838052
+37.853447
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-110.24357
+111.81208
 </td>
 <td style="text-align:center;">
-112.08914
+108.36264
 </td>
 <td style="text-align:center;">
-111.208728
+106.810608
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-44.84889
+45.59711
 </td>
 <td style="text-align:center;">
-24.74223
+22.24802
 </td>
 <td style="text-align:center;">
-20.323416
+20.590445
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-52.64322
+47.37375
 </td>
 <td style="text-align:center;">
-40.44003
+41.20129
 </td>
 <td style="text-align:center;">
-39.418518
+40.312390
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-76.23683
+70.78782
 </td>
 <td style="text-align:center;">
-76.91181
+71.95239
 </td>
 <td style="text-align:center;">
-72.452290
+70.532499
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-145.68635
+125.02656
 </td>
 <td style="text-align:center;">
-183.07446
+182.19429
 </td>
 <td style="text-align:center;">
-193.614578
+192.140642
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-68.41251
+64.12330
 </td>
 <td style="text-align:center;">
-51.91432
+49.34462
 </td>
 <td style="text-align:center;">
-45.679711
+52.522861
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-106.01048
+102.37922
 </td>
 <td style="text-align:center;">
-106.72780
+104.55813
 </td>
 <td style="text-align:center;">
-102.816434
+100.813980
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-121.62361
+114.79220
 </td>
 <td style="text-align:center;">
-144.94844
+145.70778
 </td>
 <td style="text-align:center;">
-156.927813
+147.455751
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-41.58144
+42.55531
 </td>
 <td style="text-align:center;">
-40.48257
+40.31867
 </td>
 <td style="text-align:center;">
-39.166841
+41.683277
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-56.96059
+55.58958
 </td>
 <td style="text-align:center;">
-60.92631
+62.45857
 </td>
 <td style="text-align:center;">
-63.204475
+66.507671
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-44.50726
+40.65772
 </td>
 <td style="text-align:center;">
-29.33533
+28.53224
 </td>
 <td style="text-align:center;">
-32.212371
+31.203673
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-66.99430
+65.13027
 </td>
 <td style="text-align:center;">
-60.71350
+60.91863
 </td>
 <td style="text-align:center;">
-57.974981
+61.265402
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-41.03372
+43.93292
 </td>
 <td style="text-align:center;">
-28.03344
+30.75694
 </td>
 <td style="text-align:center;">
-29.215736
+30.907924
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-79.65764
+77.48601
 </td>
 <td style="text-align:center;">
-100.05352
+95.12971
 </td>
 <td style="text-align:center;">
-99.697396
+102.218149
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-39.28279
+37.89716
 </td>
 <td style="text-align:center;">
-28.14908
+26.45086
 </td>
 <td style="text-align:center;">
-27.269055
+26.428467
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-35.27699
+38.17062
 </td>
 <td style="text-align:center;">
-30.00790
+29.56179
 </td>
 <td style="text-align:center;">
-30.888707
+31.990986
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-69.28807
+68.00166
 </td>
 <td style="text-align:center;">
-60.65216
+56.52019
 </td>
 <td style="text-align:center;">
-56.075129
+56.100342
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-36.11593
+34.96649
 </td>
 <td style="text-align:center;">
-30.40198
+31.08962
 </td>
 <td style="text-align:center;">
-31.169238
+30.301643
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-27.79171
+31.12572
 </td>
 <td style="text-align:center;">
-16.61212
+16.41770
 </td>
 <td style="text-align:center;">
-16.379791
+16.204696
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-38.55134
+43.02922
 </td>
 <td style="text-align:center;">
-30.46444
+27.49892
 </td>
 <td style="text-align:center;">
-26.999042
+28.047561
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-46.23998
+53.55687
 </td>
 <td style="text-align:center;">
-57.20463
+59.86385
 </td>
 <td style="text-align:center;">
-61.325893
+59.998676
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-34.24190
+34.59249
 </td>
 <td style="text-align:center;">
-19.37957
+20.88630
 </td>
 <td style="text-align:center;">
-18.494692
+19.745189
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-46.54709
+51.60063
 </td>
 <td style="text-align:center;">
-47.00002
+49.03648
 </td>
 <td style="text-align:center;">
-49.990318
+47.313865
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-31.46792
+42.21464
 </td>
 <td style="text-align:center;">
-18.22108
+17.10215
 </td>
 <td style="text-align:center;">
-15.657046
+16.011166
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-41.54355
+43.83018
 </td>
 <td style="text-align:center;">
-31.67461
+31.76627
 </td>
 <td style="text-align:center;">
-30.496568
+28.365520
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-39.23958
+48.89458
 </td>
 <td style="text-align:center;">
-31.64170
+29.18979
 </td>
 <td style="text-align:center;">
-26.984690
+24.982347
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-166.03389
+169.34678
 </td>
 <td style="text-align:center;">
-206.27562
+216.65432
 </td>
 <td style="text-align:center;">
-214.510100
+214.881299
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-173.08337
+180.47602
 </td>
 <td style="text-align:center;">
-217.90679
+222.63203
 </td>
 <td style="text-align:center;">
-217.847607
+218.119208
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-71.57745
+76.38740
 </td>
 <td style="text-align:center;">
-66.14247
+65.22248
 </td>
 <td style="text-align:center;">
-59.436806
+59.593367
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-52.33027
+55.03601
 </td>
 <td style="text-align:center;">
-45.94362
+40.52257
 </td>
 <td style="text-align:center;">
-41.023491
+41.880631
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-230.31240
+269.64048
 </td>
 <td style="text-align:center;">
-313.48210
+322.14242
 </td>
 <td style="text-align:center;">
-358.623761
+355.939744
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-59.61860
+60.03606
 </td>
 <td style="text-align:center;">
-67.24058
+68.05989
 </td>
 <td style="text-align:center;">
-69.410586
+65.616805
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-43.90801
+48.68977
 </td>
 <td style="text-align:center;">
-31.64346
+31.21044
 </td>
 <td style="text-align:center;">
-31.050784
+29.612901
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-32.10003
+28.60926
 </td>
 <td style="text-align:center;">
-13.52590
+12.40828
 </td>
 <td style="text-align:center;">
-12.545687
+11.282994
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-40.00784
+38.00408
 </td>
 <td style="text-align:center;">
-35.27954
+31.41341
 </td>
 <td style="text-align:center;">
-29.925869
+31.212448
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-69.37592
+65.54577
 </td>
 <td style="text-align:center;">
-69.39551
+64.40484
 </td>
 <td style="text-align:center;">
-62.971817
+63.230568
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-31.82202
+29.92820
 </td>
 <td style="text-align:center;">
-19.11493
+17.88170
 </td>
 <td style="text-align:center;">
-21.523958
+20.886297
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-40.62668
+37.51329
 </td>
 <td style="text-align:center;">
-28.85790
+30.31489
 </td>
 <td style="text-align:center;">
-33.296146
+31.616735
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-60.32088
+49.76956
 </td>
 <td style="text-align:center;">
-46.25404
+43.88494
 </td>
 <td style="text-align:center;">
-50.771502
+45.705754
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-40.17558
+34.07173
 </td>
 <td style="text-align:center;">
-20.42810
+21.04573
 </td>
 <td style="text-align:center;">
-13.649979
+14.310245
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-37.71633
+36.25495
 </td>
 <td style="text-align:center;">
-18.00213
+20.80509
 </td>
 <td style="text-align:center;">
-16.235292
+14.846603
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-61.86513
+60.46506
 </td>
 <td style="text-align:center;">
-69.65488
+66.28240
 </td>
 <td style="text-align:center;">
-65.701115
+68.460530
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-148.58643
+134.04671
 </td>
 <td style="text-align:center;">
-186.94313
+185.70958
 </td>
 <td style="text-align:center;">
-190.070456
+189.003892
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-35.59760
+34.18963
 </td>
 <td style="text-align:center;">
-14.45185
+14.89088
 </td>
 <td style="text-align:center;">
-13.371469
+12.462679
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-42.03963
+41.06988
 </td>
 <td style="text-align:center;">
-26.98305
+32.57192
 </td>
 <td style="text-align:center;">
-29.160125
+28.457117
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-35.76796
+34.73417
 </td>
 <td style="text-align:center;">
-21.73548
+19.27311
 </td>
 <td style="text-align:center;">
-19.769973
+20.907113
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-79.52621
+85.97618
 </td>
 <td style="text-align:center;">
-83.28559
+92.57621
 </td>
 <td style="text-align:center;">
-86.556028
+94.699107
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-59.01118
+59.42241
 </td>
 <td style="text-align:center;">
-61.07382
+60.08708
 </td>
 <td style="text-align:center;">
-60.959822
+60.665536
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-55.30986
+60.06723
 </td>
 <td style="text-align:center;">
-48.34492
+49.41163
 </td>
 <td style="text-align:center;">
-52.789066
+52.352421
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-46.19606
+48.22701
 </td>
 <td style="text-align:center;">
-30.08586
+34.09107
 </td>
 <td style="text-align:center;">
-31.783520
+31.468231
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-67.36684
+73.60423
 </td>
 <td style="text-align:center;">
-62.24256
+61.28902
 </td>
 <td style="text-align:center;">
-62.388641
+62.149943
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-53.79715
+56.88010
 </td>
 <td style="text-align:center;">
-53.31352
+54.53035
 </td>
 <td style="text-align:center;">
-58.716366
+60.412132
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-38.20193
+37.46098
 </td>
 <td style="text-align:center;">
-25.55783
+25.07853
 </td>
 <td style="text-align:center;">
-22.805548
+22.909042
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-55.52926
+62.47140
 </td>
 <td style="text-align:center;">
-70.04523
+68.06074
 </td>
 <td style="text-align:center;">
-69.835194
+72.170389
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-47.42261
+50.17089
 </td>
 <td style="text-align:center;">
-34.29767
+35.65969
 </td>
 <td style="text-align:center;">
-34.342782
+32.850128
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-45.70740
+45.32704
 </td>
 <td style="text-align:center;">
-28.32074
+26.90555
 </td>
 <td style="text-align:center;">
-24.125876
+23.398847
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-39.08234
+36.00762
 </td>
 <td style="text-align:center;">
-22.55095
+23.60736
 </td>
 <td style="text-align:center;">
-21.518453
+23.211566
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-37.38576
+43.79773
 </td>
 <td style="text-align:center;">
-25.74436
+25.04698
 </td>
 <td style="text-align:center;">
-24.726523
+25.210586
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-36.82845
+35.74476
 </td>
 <td style="text-align:center;">
-19.82954
+20.21730
 </td>
 <td style="text-align:center;">
-19.343803
+20.497280
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-106.59579
+113.46578
 </td>
 <td style="text-align:center;">
-122.17416
+123.03762
 </td>
 <td style="text-align:center;">
-124.583520
+123.484019
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-70.45955
+64.50893
 </td>
 <td style="text-align:center;">
-56.96449
+55.34720
 </td>
 <td style="text-align:center;">
-56.613607
+59.980293
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-160.23833
+158.31328
 </td>
 <td style="text-align:center;">
-194.83139
+191.79579
 </td>
 <td style="text-align:center;">
-194.396757
+192.872801
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-106.67322
+113.70023
 </td>
 <td style="text-align:center;">
-116.80661
+122.39288
 </td>
 <td style="text-align:center;">
-116.708330
+121.043593
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-116.26699
+120.40306
 </td>
 <td style="text-align:center;">
-112.18679
+119.27815
 </td>
 <td style="text-align:center;">
-111.494955
+114.195726
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-169.09351
+179.80124
 </td>
 <td style="text-align:center;">
-217.15444
+237.32747
 </td>
 <td style="text-align:center;">
-226.434952
+227.431951
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-83.56905
+83.34431
 </td>
 <td style="text-align:center;">
-79.40186
+83.74800
 </td>
 <td style="text-align:center;">
-90.892026
+94.388384
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-141.21054
+147.36092
 </td>
 <td style="text-align:center;">
-145.80507
+137.65618
 </td>
 <td style="text-align:center;">
-151.495148
+142.425218
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-76.18334
+82.37839
 </td>
 <td style="text-align:center;">
-77.55381
+80.32196
 </td>
 <td style="text-align:center;">
-81.547218
+85.002865
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-101.74892
+116.69906
 </td>
 <td style="text-align:center;">
-110.72256
+107.11924
 </td>
 <td style="text-align:center;">
-107.093202
+108.565330
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-58.13521
+57.13581
 </td>
 <td style="text-align:center;">
-39.69986
+39.43086
 </td>
 <td style="text-align:center;">
-38.431823
+36.830280
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-81.54713
+73.81984
 </td>
 <td style="text-align:center;">
-93.85353
+89.18769
 </td>
 <td style="text-align:center;">
-89.471269
+93.048728
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-48.40030
+44.20731
 </td>
 <td style="text-align:center;">
-33.00323
+29.10788
 </td>
 <td style="text-align:center;">
-31.086710
+33.484106
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-111.28120
+108.10591
 </td>
 <td style="text-align:center;">
-128.24221
+126.34431
 </td>
 <td style="text-align:center;">
-125.699225
+133.962333
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-117.20869
+138.30003
 </td>
 <td style="text-align:center;">
-143.72355
+145.03166
 </td>
 <td style="text-align:center;">
-144.147478
+140.738416
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-159.24032
+138.66379
 </td>
 <td style="text-align:center;">
-174.97211
+158.01876
 </td>
 <td style="text-align:center;">
-162.010737
+167.508827
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-119.92890
+125.87822
 </td>
 <td style="text-align:center;">
-133.19805
+137.81532
 </td>
 <td style="text-align:center;">
-135.350073
+136.011530
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-36.20562
+32.51064
 </td>
 <td style="text-align:center;">
-18.96678
+17.81551
 </td>
 <td style="text-align:center;">
-17.659947
+16.692894
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-38.64606
+40.09483
 </td>
 <td style="text-align:center;">
-26.18461
+26.74520
 </td>
 <td style="text-align:center;">
-38.237883
+30.567541
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-64.52584
+56.29167
 </td>
 <td style="text-align:center;">
-50.17411
+47.15303
 </td>
 <td style="text-align:center;">
-41.347257
+38.412259
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-58.18887
+60.57023
 </td>
 <td style="text-align:center;">
-52.74223
+52.79996
 </td>
 <td style="text-align:center;">
-54.072380
+52.532540
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-45.74853
+50.25746
 </td>
 <td style="text-align:center;">
-33.34492
+39.39434
 </td>
 <td style="text-align:center;">
-39.196835
+38.814634
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-78.29387
+67.91373
 </td>
 <td style="text-align:center;">
-82.65787
+81.11016
 </td>
 <td style="text-align:center;">
-89.461835
+84.171887
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-117.87104
+110.78140
 </td>
 <td style="text-align:center;">
-136.90768
+138.98314
 </td>
 <td style="text-align:center;">
-143.713747
+131.076921
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-112.17413
+107.75821
 </td>
 <td style="text-align:center;">
-128.31064
+133.72713
 </td>
 <td style="text-align:center;">
-132.756828
+134.559207
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-47.92164
+50.51913
 </td>
 <td style="text-align:center;">
-46.57045
+47.19907
 </td>
 <td style="text-align:center;">
-51.739925
+47.504159
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-62.15244
+56.88152
 </td>
 <td style="text-align:center;">
-63.42498
+63.21801
 </td>
 <td style="text-align:center;">
-66.652567
+66.727829
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-53.26020
+55.56824
 </td>
 <td style="text-align:center;">
-54.26594
+52.81543
 </td>
 <td style="text-align:center;">
-55.470195
+55.817338
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-101.71466
+109.34474
 </td>
 <td style="text-align:center;">
-117.73751
+118.28054
 </td>
 <td style="text-align:center;">
-124.168750
+116.005635
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-40.11922
+39.07386
 </td>
 <td style="text-align:center;">
-35.19977
+37.43161
 </td>
 <td style="text-align:center;">
-37.079060
+40.644757
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-39.50698
+42.91588
 </td>
 <td style="text-align:center;">
-27.06033
+27.14672
 </td>
 <td style="text-align:center;">
-29.471639
+26.878720
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-79.93529
+80.41760
 </td>
 <td style="text-align:center;">
-93.69970
+92.00756
 </td>
 <td style="text-align:center;">
-97.465313
+99.966874
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-34.34747
+34.62962
 </td>
 <td style="text-align:center;">
-24.04443
+23.52518
 </td>
 <td style="text-align:center;">
-22.348945
+21.944180
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-76.62470
+77.03801
 </td>
 <td style="text-align:center;">
-83.69752
+88.23996
 </td>
 <td style="text-align:center;">
-92.395796
+91.802625
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-71.30312
+72.50692
 </td>
 <td style="text-align:center;">
-78.58033
+75.10849
 </td>
 <td style="text-align:center;">
-78.137618
+80.494649
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-94.58883
+82.54763
 </td>
 <td style="text-align:center;">
-98.38490
+109.17401
 </td>
 <td style="text-align:center;">
-99.730023
+99.384974
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-51.31094
+57.60415
 </td>
 <td style="text-align:center;">
-51.56149
+53.16921
 </td>
 <td style="text-align:center;">
-51.503818
+48.924343
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-42.21409
+46.01915
 </td>
 <td style="text-align:center;">
-45.27301
+37.78040
 </td>
 <td style="text-align:center;">
-36.011873
+37.896060
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-69.55319
+69.34698
 </td>
 <td style="text-align:center;">
-84.19653
+86.37517
 </td>
 <td style="text-align:center;">
-87.856335
+88.708234
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-66.08091
+68.36018
 </td>
 <td style="text-align:center;">
-64.55413
+68.11312
 </td>
 <td style="text-align:center;">
-58.916337
+58.993524
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-31.97076
+36.76019
 </td>
 <td style="text-align:center;">
-16.73201
+13.52225
 </td>
 <td style="text-align:center;">
-12.603346
+12.296605
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-117.40784
+111.51025
 </td>
 <td style="text-align:center;">
-122.85400
+137.74949
 </td>
 <td style="text-align:center;">
-129.396155
+137.066342
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-44.42102
+52.59305
 </td>
 <td style="text-align:center;">
-29.89895
+29.49102
 </td>
 <td style="text-align:center;">
-25.759156
+27.888937
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-46.15385
+51.90891
 </td>
 <td style="text-align:center;">
-45.32414
+42.50585
 </td>
 <td style="text-align:center;">
-43.754270
+42.546367
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-27.86188
+30.11259
 </td>
 <td style="text-align:center;">
-13.28772
+12.79383
 </td>
 <td style="text-align:center;">
-13.098435
+11.868511
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-38.52412
+39.05030
 </td>
 <td style="text-align:center;">
-17.41505
+16.51610
 </td>
 <td style="text-align:center;">
-12.468708
+13.331210
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-73.94097
+89.37937
 </td>
 <td style="text-align:center;">
-88.96157
+103.93823
 </td>
 <td style="text-align:center;">
-94.267319
+100.219135
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-86.08883
+85.47636
 </td>
 <td style="text-align:center;">
-80.74950
+84.47316
 </td>
 <td style="text-align:center;">
-79.932425
+73.685845
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-195.46067
+223.80476
 </td>
 <td style="text-align:center;">
-246.89445
+233.03569
 </td>
 <td style="text-align:center;">
-219.830406
+218.314731
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-178.74940
+185.56713
 </td>
 <td style="text-align:center;">
-219.55673
+226.15342
 </td>
 <td style="text-align:center;">
-218.662765
+229.065666
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-68.23862
+76.39344
 </td>
 <td style="text-align:center;">
-60.54934
+58.95716
 </td>
 <td style="text-align:center;">
-61.674937
+61.181357
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-95.27701
+95.72060
 </td>
 <td style="text-align:center;">
-90.12786
+94.55753
 </td>
 <td style="text-align:center;">
-89.944844
+84.502976
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-156.58922
+163.97367
 </td>
 <td style="text-align:center;">
-166.11331
+182.70924
 </td>
 <td style="text-align:center;">
-173.670269
+172.830279
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-183.69253
+182.07967
 </td>
 <td style="text-align:center;">
-205.15224
+209.32783
 </td>
 <td style="text-align:center;">
-216.292750
+201.353153
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-31.82540
+28.26675
 </td>
 <td style="text-align:center;">
-23.40393
+21.90539
 </td>
 <td style="text-align:center;">
-26.200138
+24.039152
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-31.22602
+27.10705
 </td>
 <td style="text-align:center;">
-18.23148
+19.46408
 </td>
 <td style="text-align:center;">
-21.598520
+21.206326
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-53.15481
+51.78469
 </td>
 <td style="text-align:center;">
-41.72702
+41.57283
 </td>
 <td style="text-align:center;">
-38.288681
+48.439093
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-114.42064
+126.80696
 </td>
 <td style="text-align:center;">
-138.24382
+124.82616
 </td>
 <td style="text-align:center;">
-128.772016
+131.486834
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-38.35319
+36.29707
 </td>
 <td style="text-align:center;">
-26.44080
+21.70145
 </td>
 <td style="text-align:center;">
-20.393591
+24.673430
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-38.79195
+37.42027
 </td>
 <td style="text-align:center;">
-20.91956
+21.61087
 </td>
 <td style="text-align:center;">
-22.377398
+19.284497
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-36.35998
+34.95054
 </td>
 <td style="text-align:center;">
-19.97985
+22.57300
 </td>
 <td style="text-align:center;">
-20.356023
+19.841943
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-47.26532
+38.48478
 </td>
 <td style="text-align:center;">
-21.42219
+21.56938
 </td>
 <td style="text-align:center;">
-20.983583
+18.431471
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-53.27497
+51.70310
 </td>
 <td style="text-align:center;">
-43.87547
+43.22054
 </td>
 <td style="text-align:center;">
-43.370991
+47.283375
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-75.73508
+76.75369
 </td>
 <td style="text-align:center;">
-73.56052
+63.55498
 </td>
 <td style="text-align:center;">
-65.412006
+63.262585
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-83.90403
+93.25984
 </td>
 <td style="text-align:center;">
-94.18116
+91.92314
 </td>
 <td style="text-align:center;">
-94.626751
+95.316408
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-96.18479
+98.78215
 </td>
 <td style="text-align:center;">
-106.42760
+108.70203
 </td>
 <td style="text-align:center;">
-116.176240
+111.000793
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-45.22714
+44.43586
 </td>
 <td style="text-align:center;">
-28.90735
+27.30609
 </td>
 <td style="text-align:center;">
-29.495516
+26.265180
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-74.14870
+77.70469
 </td>
 <td style="text-align:center;">
-76.87593
+78.45551
 </td>
 <td style="text-align:center;">
-74.233626
+72.879133
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-46.22984
+46.32630
 </td>
 <td style="text-align:center;">
-24.90325
+25.02492
 </td>
 <td style="text-align:center;">
-22.861314
+23.923717
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-47.60658
+47.10640
 </td>
 <td style="text-align:center;">
-40.47240
+40.32606
 </td>
 <td style="text-align:center;">
-35.909951
+38.189643
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-79.09135
+78.15223
 </td>
 <td style="text-align:center;">
-91.71720
+86.81222
 </td>
 <td style="text-align:center;">
-89.554261
+94.166350
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-39.86476
+38.44395
 </td>
 <td style="text-align:center;">
-23.12975
+23.67861
 </td>
 <td style="text-align:center;">
-22.650484
+23.505767
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-77.73540
+75.62704
 </td>
 <td style="text-align:center;">
-79.28637
+78.88425
 </td>
 <td style="text-align:center;">
-78.351827
+81.849542
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-52.80287
+51.49257
 </td>
 <td style="text-align:center;">
-40.80436
+41.24082
 </td>
 <td style="text-align:center;">
-43.172874
+37.996003
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-92.19485
+92.20104
 </td>
 <td style="text-align:center;">
-110.86408
+109.41196
 </td>
 <td style="text-align:center;">
-112.903411
+114.231352
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-88.47039
+88.90220
 </td>
 <td style="text-align:center;">
-87.81703
+87.95176
 </td>
 <td style="text-align:center;">
-88.737401
+87.064817
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-52.90866
+53.05006
 </td>
 <td style="text-align:center;">
-49.48639
+46.82916
 </td>
 <td style="text-align:center;">
-44.529851
+41.339680
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-45.56087
+50.44159
 </td>
 <td style="text-align:center;">
-26.57489
+27.42154
 </td>
 <td style="text-align:center;">
-25.527613
+24.036735
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-34.75752
+33.92627
 </td>
 <td style="text-align:center;">
-17.55256
+17.41495
 </td>
 <td style="text-align:center;">
-16.769883
+17.691037
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-83.77332
+84.05446
 </td>
 <td style="text-align:center;">
-84.80769
+84.33946
 </td>
 <td style="text-align:center;">
-78.338630
+80.172702
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-44.40351
+49.20071
 </td>
 <td style="text-align:center;">
-34.47970
+27.76416
 </td>
 <td style="text-align:center;">
-23.705483
+25.803393
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-113.93269
+113.56774
 </td>
 <td style="text-align:center;">
-128.07631
+135.04391
 </td>
 <td style="text-align:center;">
-123.724937
+121.934817
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-95.54785
+100.47081
 </td>
 <td style="text-align:center;">
-112.06299
+116.19734
 </td>
 <td style="text-align:center;">
-118.127260
+118.248450
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-39.73768
+40.64698
 </td>
 <td style="text-align:center;">
-19.08688
+17.54010
 </td>
 <td style="text-align:center;">
-16.566030
+16.753443
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-85.45582
+79.08299
 </td>
 <td style="text-align:center;">
-85.82583
+76.33154
 </td>
 <td style="text-align:center;">
-79.783760
+78.315116
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-95.22388
+87.84170
 </td>
 <td style="text-align:center;">
-95.33113
+98.46790
 </td>
 <td style="text-align:center;">
-96.960851
+97.427127
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-128.71903
+142.72139
 </td>
 <td style="text-align:center;">
-169.28447
+159.13846
 </td>
 <td style="text-align:center;">
-171.134737
+165.006988
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-148.36928
+163.81528
 </td>
 <td style="text-align:center;">
-180.90992
+175.16121
 </td>
 <td style="text-align:center;">
-175.370403
+181.237106
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-61.47415
+66.55687
 </td>
 <td style="text-align:center;">
-51.03177
+59.16608
 </td>
 <td style="text-align:center;">
-53.766007
+50.545276
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-181.25611
+174.35147
 </td>
 <td style="text-align:center;">
-222.45972
+222.15864
 </td>
 <td style="text-align:center;">
-227.645485
+216.686933
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-64.97674
+64.92053
 </td>
 <td style="text-align:center;">
-42.41840
+39.75874
 </td>
 <td style="text-align:center;">
-38.170674
+37.397896
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-165.87456
+174.35069
 </td>
 <td style="text-align:center;">
-176.46349
+166.25566
 </td>
 <td style="text-align:center;">
-155.063864
+153.623027
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-65.95875
+64.76531
 </td>
 <td style="text-align:center;">
-59.48874
+56.27506
 </td>
 <td style="text-align:center;">
-62.172279
+63.422119
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-86.01180
+83.13773
 </td>
 <td style="text-align:center;">
-90.56277
+99.49410
 </td>
 <td style="text-align:center;">
-99.330398
+98.232061
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-111.99877
+124.21317
 </td>
 <td style="text-align:center;">
-138.13327
+134.66616
 </td>
 <td style="text-align:center;">
-131.430973
+129.607710
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-56.08040
+60.20520
 </td>
 <td style="text-align:center;">
-64.64033
+56.63136
 </td>
 <td style="text-align:center;">
-63.112124
+61.858587
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-45.65713
+53.96788
 </td>
 <td style="text-align:center;">
-45.67584
+42.71897
 </td>
 <td style="text-align:center;">
-41.469894
+47.467451
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-139.98591
+140.11181
 </td>
 <td style="text-align:center;">
-171.40155
+166.42924
 </td>
 <td style="text-align:center;">
-166.220708
+165.139376
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-75.72393
+71.03119
 </td>
 <td style="text-align:center;">
-90.37832
+89.75644
 </td>
 <td style="text-align:center;">
-102.234637
+98.440028
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-41.18875
+42.95601
 </td>
 <td style="text-align:center;">
-25.97956
+25.69799
 </td>
 <td style="text-align:center;">
-18.310246
+19.031407
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-31.16062
+30.10340
 </td>
 <td style="text-align:center;">
-20.29597
+18.06181
 </td>
 <td style="text-align:center;">
-17.221956
+18.743045
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-41.11842
+48.01040
 </td>
 <td style="text-align:center;">
-17.58990
+16.42632
 </td>
 <td style="text-align:center;">
-14.971341
+14.231045
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-33.69611
+36.52672
 </td>
 <td style="text-align:center;">
-26.25461
+26.68112
 </td>
 <td style="text-align:center;">
-29.560375
+28.437190
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-85.06647
+70.85809
 </td>
 <td style="text-align:center;">
-106.34904
+117.72328
 </td>
 <td style="text-align:center;">
-115.194837
+118.033524
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-58.97512
+55.23804
 </td>
 <td style="text-align:center;">
-78.15524
+77.65608
 </td>
 <td style="text-align:center;">
-90.907699
+99.662206
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-94.41339
+90.10507
 </td>
 <td style="text-align:center;">
-120.45360
+111.14814
 </td>
 <td style="text-align:center;">
-118.157387
+116.889676
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-52.87558
+48.15225
 </td>
 <td style="text-align:center;">
-40.25769
+41.26196
 </td>
 <td style="text-align:center;">
-45.268203
+40.407222
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-61.37804
+63.08429
 </td>
 <td style="text-align:center;">
-69.10748
+63.23376
 </td>
 <td style="text-align:center;">
-69.281385
+64.792006
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-121.09332
+114.21135
 </td>
 <td style="text-align:center;">
-135.54244
+137.11713
 </td>
 <td style="text-align:center;">
-138.790251
+142.352357
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-69.56024
+65.73458
 </td>
 <td style="text-align:center;">
-59.42192
+56.90665
 </td>
 <td style="text-align:center;">
-52.111251
+51.675426
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-69.08788
+67.70731
 </td>
 <td style="text-align:center;">
-71.87691
+69.66689
 </td>
 <td style="text-align:center;">
-69.076719
+72.027387
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-45.92649
+44.17893
 </td>
 <td style="text-align:center;">
-34.94456
+32.82130
 </td>
 <td style="text-align:center;">
-33.726671
+33.936197
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-74.88692
+74.66589
 </td>
 <td style="text-align:center;">
-85.36103
+85.52530
 </td>
 <td style="text-align:center;">
-85.498926
+87.994574
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-35.60542
+35.10445
 </td>
 <td style="text-align:center;">
-30.41720
+31.88081
 </td>
 <td style="text-align:center;">
-29.982396
+30.521884
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-43.67863
+47.08419
 </td>
 <td style="text-align:center;">
-28.23365
+28.48232
 </td>
 <td style="text-align:center;">
-29.603133
+31.206831
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-36.52075
+37.18412
 </td>
 <td style="text-align:center;">
-27.33382
+26.58268
 </td>
 <td style="text-align:center;">
-25.970038
+26.246562
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-81.92034
+79.71453
 </td>
 <td style="text-align:center;">
-92.74874
+88.85233
 </td>
 <td style="text-align:center;">
-93.998426
+91.970525
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-42.11685
+43.26215
 </td>
 <td style="text-align:center;">
-29.36657
+27.95320
 </td>
 <td style="text-align:center;">
-27.487599
+28.221100
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-42.39098
+45.76922
 </td>
 <td style="text-align:center;">
-29.95949
+25.53514
 </td>
 <td style="text-align:center;">
-24.759421
+22.169615
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-79.63483
+79.77838
 </td>
 <td style="text-align:center;">
-75.60796
+70.31825
 </td>
 <td style="text-align:center;">
-75.650771
+69.896997
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-82.94232
+81.51580
 </td>
 <td style="text-align:center;">
-89.34021
+86.21558
 </td>
 <td style="text-align:center;">
-91.978351
+90.187021
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-71.34009
+70.52264
 </td>
 <td style="text-align:center;">
-89.27607
+87.28146
 </td>
 <td style="text-align:center;">
-94.421935
+94.663290
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-34.37522
+36.38151
 </td>
 <td style="text-align:center;">
-31.72703
+29.94742
 </td>
 <td style="text-align:center;">
-29.509513
+31.730649
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-40.92364
+40.00811
 </td>
 <td style="text-align:center;">
-21.16411
+20.90101
 </td>
 <td style="text-align:center;">
-22.060752
+22.937627
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-92.99964
+97.22471
 </td>
 <td style="text-align:center;">
-101.10811
+108.95670
 </td>
 <td style="text-align:center;">
-106.993784
+103.236116
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-39.40656
+40.38773
 </td>
 <td style="text-align:center;">
-41.76447
+40.87334
 </td>
 <td style="text-align:center;">
-44.322382
+44.684554
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-37.05419
+34.22637
 </td>
 <td style="text-align:center;">
-19.20396
+20.65080
 </td>
 <td style="text-align:center;">
-20.086355
+18.664006
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-108.60428
+108.09327
 </td>
 <td style="text-align:center;">
-117.50233
+116.06642
 </td>
 <td style="text-align:center;">
-112.883275
+109.480430
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-31.36752
+33.82919
 </td>
 <td style="text-align:center;">
-20.98866
+21.23411
 </td>
 <td style="text-align:center;">
-21.806931
+22.348725
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-49.44124
+53.24051
 </td>
 <td style="text-align:center;">
-23.21996
+28.36016
 </td>
 <td style="text-align:center;">
-23.460766
+24.515423
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-172.73512
+173.45489
 </td>
 <td style="text-align:center;">
-216.06934
+217.33164
 </td>
 <td style="text-align:center;">
-211.044360
+217.334119
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-30.73804
+28.08511
 </td>
 <td style="text-align:center;">
-11.28688
+13.42962
 </td>
 <td style="text-align:center;">
-9.641531
+9.272286
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-170.25468
+172.31556
 </td>
 <td style="text-align:center;">
-210.98345
+211.63924
 </td>
 <td style="text-align:center;">
-221.571010
+210.693488
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-34.15235
+39.44497
 </td>
 <td style="text-align:center;">
-21.85511
+21.49312
 </td>
 <td style="text-align:center;">
-22.038997
+20.582954
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-52.82379
+70.92765
 </td>
 <td style="text-align:center;">
-46.58442
+41.56473
 </td>
 <td style="text-align:center;">
-38.453730
+39.994607
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-166.09596
+171.12197
 </td>
 <td style="text-align:center;">
-200.93804
+194.77826
 </td>
 <td style="text-align:center;">
-200.207014
+201.702684
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-177.47567
+182.11155
 </td>
 <td style="text-align:center;">
-188.75056
+197.06532
 </td>
 <td style="text-align:center;">
-183.262548
+185.138270
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-176.11654
+176.62838
 </td>
 <td style="text-align:center;">
-196.58647
+198.63084
 </td>
 <td style="text-align:center;">
-204.457588
+202.202825
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-41.75442
+33.85697
 </td>
 <td style="text-align:center;">
-11.26778
+12.07416
 </td>
 <td style="text-align:center;">
-7.339349
+6.552403
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-61.34896
+60.96803
 </td>
 <td style="text-align:center;">
-63.16472
+64.00689
 </td>
 <td style="text-align:center;">
-63.842623
+66.774679
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-196.56769
+206.84271
 </td>
 <td style="text-align:center;">
-258.61222
+260.75674
 </td>
 <td style="text-align:center;">
-265.201177
+270.085770
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-202.21202
+222.61433
 </td>
 <td style="text-align:center;">
-303.85672
+309.64033
 </td>
 <td style="text-align:center;">
-329.469571
+324.672255
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-186.35645
+170.17269
 </td>
 <td style="text-align:center;">
-232.81496
+227.70879
 </td>
 <td style="text-align:center;">
-241.490592
+242.970117
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-31.52404
+31.46049
 </td>
 <td style="text-align:center;">
-23.21421
+17.11098
 </td>
 <td style="text-align:center;">
-13.685766
+12.661860
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-28.35764
+23.20175
 </td>
 <td style="text-align:center;">
-12.00640
+10.78919
 </td>
 <td style="text-align:center;">
-10.316942
+10.510632
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-34.27162
+28.41484
 </td>
 <td style="text-align:center;">
-28.32706
+25.81524
 </td>
 <td style="text-align:center;">
-26.844299
+26.736043
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-42.38150
+38.86237
 </td>
 <td style="text-align:center;">
-27.93149
+29.83563
 </td>
 <td style="text-align:center;">
-31.239484
+30.246406
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-50.31564
+51.02724
 </td>
 <td style="text-align:center;">
-40.84476
+40.56754
 </td>
 <td style="text-align:center;">
-43.620886
+43.622398
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-60.02053
+54.36945
 </td>
 <td style="text-align:center;">
-47.62776
+47.50488
 </td>
 <td style="text-align:center;">
-50.327619
+42.620384
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-43.26655
+42.60570
 </td>
 <td style="text-align:center;">
-23.27302
+28.15305
 </td>
 <td style="text-align:center;">
-21.566608
+22.404338
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-35.11544
+34.96547
 </td>
 <td style="text-align:center;">
-21.37877
+22.76184
 </td>
 <td style="text-align:center;">
-17.060744
+15.318535
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-44.13805
+46.46014
 </td>
 <td style="text-align:center;">
-37.93358
+34.11719
 </td>
 <td style="text-align:center;">
-28.894942
+29.343848
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-182.96249
+168.51729
 </td>
 <td style="text-align:center;">
-240.33181
+238.44303
 </td>
 <td style="text-align:center;">
-241.294336
+244.615657
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-41.60694
+36.81982
 </td>
 <td style="text-align:center;">
-22.77546
+20.48606
 </td>
 <td style="text-align:center;">
-19.165115
+20.502561
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-82.67411
+83.01253
 </td>
 <td style="text-align:center;">
-88.41919
+96.25260
 </td>
 <td style="text-align:center;">
-87.587655
+95.025571
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-60.16459
+65.87298
 </td>
 <td style="text-align:center;">
-78.81120
+76.03641
 </td>
 <td style="text-align:center;">
-82.927476
+77.051326
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-33.43408
+32.92031
 </td>
 <td style="text-align:center;">
-15.13363
+17.10521
 </td>
 <td style="text-align:center;">
-15.373565
+14.994601
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-45.63428
+42.57047
 </td>
 <td style="text-align:center;">
-34.12851
+34.17974
 </td>
 <td style="text-align:center;">
-30.620226
+32.724931
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-85.83898
+85.81704
 </td>
 <td style="text-align:center;">
-90.87434
+90.55051
 </td>
 <td style="text-align:center;">
-86.960309
+83.437436
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-85.71182
+84.84446
 </td>
 <td style="text-align:center;">
-93.21463
+87.85233
 </td>
 <td style="text-align:center;">
-93.422108
+93.996540
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-89.87527
+92.63922
 </td>
 <td style="text-align:center;">
-84.99457
+85.27838
 </td>
 <td style="text-align:center;">
-80.060802
+81.101260
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-105.81676
+103.14016
 </td>
 <td style="text-align:center;">
-121.41537
+119.86422
 </td>
 <td style="text-align:center;">
-122.424437
+122.272630
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-73.42141
+68.42474
 </td>
 <td style="text-align:center;">
-66.50153
+69.47162
 </td>
 <td style="text-align:center;">
-64.864800
+63.932775
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-56.65893
+56.07306
 </td>
 <td style="text-align:center;">
-59.02041
+59.35840
 </td>
 <td style="text-align:center;">
-60.775124
+60.612803
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-42.33005
+45.83585
 </td>
 <td style="text-align:center;">
-37.23762
+40.30669
 </td>
 <td style="text-align:center;">
-37.930776
+37.538085
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-71.83313
+71.67086
 </td>
 <td style="text-align:center;">
-70.09046
+72.61542
 </td>
 <td style="text-align:center;">
-72.643669
+73.802509
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-45.98254
+47.58917
 </td>
 <td style="text-align:center;">
-42.69121
+43.44200
 </td>
 <td style="text-align:center;">
-43.077602
+43.441731
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-59.88847
+52.43603
 </td>
 <td style="text-align:center;">
-45.25037
+44.13804
 </td>
 <td style="text-align:center;">
-43.801405
+43.765198
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-81.20123
+79.32549
 </td>
 <td style="text-align:center;">
-90.41800
+90.88652
 </td>
 <td style="text-align:center;">
-90.837838
+94.054474
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-81.49359
+80.21468
 </td>
 <td style="text-align:center;">
-87.12247
+88.96884
 </td>
 <td style="text-align:center;">
-89.091917
+87.935502
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-46.21597
+47.13499
 </td>
 <td style="text-align:center;">
-37.27259
+34.92889
 </td>
 <td style="text-align:center;">
-35.309148
+33.073963
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-29.87656
+31.98581
 </td>
 <td style="text-align:center;">
-15.16217
+14.38420
 </td>
 <td style="text-align:center;">
-14.315745
+15.095018
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-42.91110
+50.69750
 </td>
 <td style="text-align:center;">
-26.10718
+27.50664
 </td>
 <td style="text-align:center;">
-27.653348
+27.804489
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-95.99610
+101.61242
 </td>
 <td style="text-align:center;">
-117.53167
+118.50725
 </td>
 <td style="text-align:center;">
-125.322965
+122.015557
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-123.93523
+138.46175
 </td>
 <td style="text-align:center;">
-129.99853
+123.37693
 </td>
 <td style="text-align:center;">
-118.543377
+119.543494
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-61.60156
+59.83807
 </td>
 <td style="text-align:center;">
-52.00702
+58.18813
 </td>
 <td style="text-align:center;">
-52.298928
+52.473219
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-78.02594
+77.80580
 </td>
 <td style="text-align:center;">
-78.74239
+83.28974
 </td>
 <td style="text-align:center;">
-80.474343
+84.568228
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-43.29344
+42.69649
 </td>
 <td style="text-align:center;">
-28.69451
+27.19103
 </td>
 <td style="text-align:center;">
-31.178824
+26.331498
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-58.49653
+55.86899
 </td>
 <td style="text-align:center;">
-52.85753
+57.49253
 </td>
 <td style="text-align:center;">
-58.982506
+59.878056
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-63.86570
+70.44232
 </td>
 <td style="text-align:center;">
-66.17087
+69.69238
 </td>
 <td style="text-align:center;">
-69.292423
+67.541830
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-88.24041
+93.83908
 </td>
 <td style="text-align:center;">
-120.04894
+112.83170
 </td>
 <td style="text-align:center;">
-117.550773
+120.170615
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-146.21191
+146.54199
 </td>
 <td style="text-align:center;">
-194.56332
+185.39988
 </td>
 <td style="text-align:center;">
-201.302723
+207.226728
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-132.17223
+143.10639
 </td>
 <td style="text-align:center;">
-164.94519
+157.47594
 </td>
 <td style="text-align:center;">
-156.964188
+157.513547
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-56.58199
+54.04872
 </td>
 <td style="text-align:center;">
-67.64568
+54.01746
 </td>
 <td style="text-align:center;">
-54.502503
+56.594925
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-45.91950
+53.04068
 </td>
 <td style="text-align:center;">
-30.68221
+31.45518
 </td>
 <td style="text-align:center;">
-26.001621
+28.936521
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-32.79444
+32.89219
 </td>
 <td style="text-align:center;">
-18.05270
+18.39967
 </td>
 <td style="text-align:center;">
-17.230093
+18.103345
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-100.94853
+98.79095
 </td>
 <td style="text-align:center;">
-110.33356
+111.67580
 </td>
 <td style="text-align:center;">
-110.059337
+107.479179
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-35.27637
+36.44339
 </td>
 <td style="text-align:center;">
-25.77596
+23.83701
 </td>
 <td style="text-align:center;">
-19.103275
+15.762485
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-56.85300
+64.81943
 </td>
 <td style="text-align:center;">
-51.70990
+56.93961
 </td>
 <td style="text-align:center;">
-54.229685
+56.561909
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-94.47348
+92.75392
 </td>
 <td style="text-align:center;">
-120.78476
+114.41252
 </td>
 <td style="text-align:center;">
-121.211127
+118.733438
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-68.38152
+68.48820
 </td>
 <td style="text-align:center;">
-66.00392
+62.23950
 </td>
 <td style="text-align:center;">
-66.494919
+68.055986
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-128.81606
+116.38879
 </td>
 <td style="text-align:center;">
-153.34603
+156.61431
 </td>
 <td style="text-align:center;">
-155.361942
+165.309274
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-74.68265
+75.19292
 </td>
 <td style="text-align:center;">
-86.92688
+84.81956
 </td>
 <td style="text-align:center;">
-91.714225
+97.122526
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-39.74076
+45.92866
 </td>
 <td style="text-align:center;">
-42.97554
+43.86624
 </td>
 <td style="text-align:center;">
-43.644942
+37.755976
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-39.38555
+35.75225
 </td>
 <td style="text-align:center;">
-24.43111
+26.25314
 </td>
 <td style="text-align:center;">
-21.676502
+23.910936
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-48.79282
+47.99593
 </td>
 <td style="text-align:center;">
-38.29985
+36.25361
 </td>
 <td style="text-align:center;">
-38.904122
+40.335442
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-41.32277
+40.04531
 </td>
 <td style="text-align:center;">
-25.81595
+26.06569
 </td>
 <td style="text-align:center;">
-27.712052
+27.169193
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-87.41592
+79.36249
 </td>
 <td style="text-align:center;">
-90.70937
+90.91211
 </td>
 <td style="text-align:center;">
-90.085253
+91.158293
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-67.23061
+63.16069
 </td>
 <td style="text-align:center;">
-68.14126
+68.06758
 </td>
 <td style="text-align:center;">
-64.753844
+70.238268
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-86.38999
+85.96007
 </td>
 <td style="text-align:center;">
-100.39182
+101.37054
 </td>
 <td style="text-align:center;">
-105.919683
+108.766817
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-32.51201
+28.76291
 </td>
 <td style="text-align:center;">
-11.83048
+12.62540
 </td>
 <td style="text-align:center;">
-11.877921
+11.981751
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-106.56871
+103.56777
 </td>
 <td style="text-align:center;">
-112.77865
+115.18363
 </td>
 <td style="text-align:center;">
-114.469956
+110.551687
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-36.54322
+39.23109
 </td>
 <td style="text-align:center;">
-26.15086
+33.00045
 </td>
 <td style="text-align:center;">
-26.608647
+24.233353
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-81.89927
+71.87011
 </td>
 <td style="text-align:center;">
-93.15776
+93.57033
 </td>
 <td style="text-align:center;">
-92.773377
+95.877173
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-40.00940
+34.41806
 </td>
 <td style="text-align:center;">
-25.56991
+25.83274
 </td>
 <td style="text-align:center;">
-27.586794
+26.247676
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-29.36487
+34.12741
 </td>
 <td style="text-align:center;">
-15.87280
+15.47155
 </td>
 <td style="text-align:center;">
-15.190713
+16.795481
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-46.26242
+48.90389
 </td>
 <td style="text-align:center;">
-22.98324
+27.88923
 </td>
 <td style="text-align:center;">
-23.107744
+24.371011
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-139.38070
+138.62151
 </td>
 <td style="text-align:center;">
-154.13930
+167.27710
 </td>
 <td style="text-align:center;">
-142.378886
+155.627178
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-51.15376
+50.37813
 </td>
 <td style="text-align:center;">
-38.52645
+32.24238
 </td>
 <td style="text-align:center;">
-30.268470
+33.916387
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-54.93959
+71.80224
 </td>
 <td style="text-align:center;">
-48.99544
+41.11962
 </td>
 <td style="text-align:center;">
-38.174597
+39.876612
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-86.79784
+90.76433
 </td>
 <td style="text-align:center;">
-85.48651
+80.82738
 </td>
 <td style="text-align:center;">
-82.549374
+73.894817
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-177.74180
+173.23306
 </td>
 <td style="text-align:center;">
-208.28422
+200.16701
 </td>
 <td style="text-align:center;">
-203.916623
+206.206551
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-43.24337
+41.65536
 </td>
 <td style="text-align:center;">
-20.55540
+22.27023
 </td>
 <td style="text-align:center;">
-21.136449
+22.518445
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-48.95743
+51.09106
 </td>
 <td style="text-align:center;">
-38.22619
+39.22437
 </td>
 <td style="text-align:center;">
-37.627147
+36.712891
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-66.07971
+67.59893
 </td>
 <td style="text-align:center;">
-63.61015
+60.98975
 </td>
 <td style="text-align:center;">
-55.791650
+52.261630
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-183.21280
+185.39010
 </td>
 <td style="text-align:center;">
-186.76611
+193.40698
 </td>
 <td style="text-align:center;">
-182.543522
+184.176440
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-58.97429
+54.18032
 </td>
 <td style="text-align:center;">
-53.56019
+55.17506
 </td>
 <td style="text-align:center;">
-54.844966
+55.335339
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-176.99591
+169.66239
 </td>
 <td style="text-align:center;">
-218.02346
+215.82626
 </td>
 <td style="text-align:center;">
-238.571284
+239.315672
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-194.76692
+206.60165
 </td>
 <td style="text-align:center;">
-289.68636
+297.56047
 </td>
 <td style="text-align:center;">
-319.063753
+306.034804
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-38.43316
+37.16343
 </td>
 <td style="text-align:center;">
-33.97369
+34.28743
 </td>
 <td style="text-align:center;">
-32.927360
+35.377396
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-33.60302
+32.52082
 </td>
 <td style="text-align:center;">
-23.49996
+17.80032
 </td>
 <td style="text-align:center;">
-12.971388
+13.184857
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-83.83623
+71.32973
 </td>
 <td style="text-align:center;">
-86.99564
+84.55811
 </td>
 <td style="text-align:center;">
-80.001198
+83.162202
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-93.90256
+94.62039
 </td>
 <td style="text-align:center;">
-96.41532
+103.16284
 </td>
 <td style="text-align:center;">
-91.752500
+91.098804
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-86.73569
+86.97980
 </td>
 <td style="text-align:center;">
-109.68969
+110.36545
 </td>
 <td style="text-align:center;">
-117.670290
+117.534969
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-28.70240
+28.75436
 </td>
 <td style="text-align:center;">
-15.43103
+16.46289
 </td>
 <td style="text-align:center;">
-18.039819
+18.312205
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-40.62393
+41.87534
 </td>
 <td style="text-align:center;">
-37.76183
+34.62716
 </td>
 <td style="text-align:center;">
-34.941147
+31.815004
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-106.17206
+112.62267
 </td>
 <td style="text-align:center;">
-124.31061
+118.20031
 </td>
 <td style="text-align:center;">
-123.468207
+116.479459
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-35.01435
+35.44821
 </td>
 <td style="text-align:center;">
-31.27577
+29.47264
 </td>
 <td style="text-align:center;">
-31.122611
+30.275896
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-85.60780
+92.48186
 </td>
 <td style="text-align:center;">
-104.03951
+101.73638
 </td>
 <td style="text-align:center;">
-104.303289
+101.880043
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-69.42832
+65.20605
 </td>
 <td style="text-align:center;">
-66.14677
+60.56280
 </td>
 <td style="text-align:center;">
-60.989402
+64.246368
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-27.87602
+27.81086
 </td>
 <td style="text-align:center;">
-12.20337
+13.13584
 </td>
 <td style="text-align:center;">
-11.809199
+10.112410
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-44.58596
+39.93112
 </td>
 <td style="text-align:center;">
-23.04647
+26.28969
 </td>
 <td style="text-align:center;">
-21.379139
+21.127820
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-38.93864
+42.03200
 </td>
 <td style="text-align:center;">
-29.36797
+28.37757
 </td>
 <td style="text-align:center;">
-28.273723
+26.569347
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-79.77325
+76.55979
 </td>
 <td style="text-align:center;">
-71.25192
+72.77664
 </td>
 <td style="text-align:center;">
-66.924073
+68.869707
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-72.89412
+81.17369
 </td>
 <td style="text-align:center;">
-80.64166
+78.00285
 </td>
 <td style="text-align:center;">
-80.382207
+78.427712
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-80.38739
+75.70133
 </td>
 <td style="text-align:center;">
-88.34010
+85.83268
 </td>
 <td style="text-align:center;">
-84.177759
+79.359229
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-38.08626
+40.88833
 </td>
 <td style="text-align:center;">
-31.91999
+30.84218
 </td>
 <td style="text-align:center;">
-31.195576
+31.514573
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-51.04568
+55.48177
 </td>
 <td style="text-align:center;">
-56.34955
+59.41333
 </td>
 <td style="text-align:center;">
-59.584027
+58.672736
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-47.11889
+45.35623
 </td>
 <td style="text-align:center;">
-36.30372
+36.19916
 </td>
 <td style="text-align:center;">
-38.552343
+37.450901
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-41.74869
+39.27292
 </td>
 <td style="text-align:center;">
-28.39484
+27.27892
 </td>
 <td style="text-align:center;">
-34.765362
+27.337644
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-42.01389
+41.38698
 </td>
 <td style="text-align:center;">
-29.10403
+30.49830
 </td>
 <td style="text-align:center;">
-30.945817
+27.644360
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-47.91660
+52.15744
 </td>
 <td style="text-align:center;">
-47.07113
+46.84735
 </td>
 <td style="text-align:center;">
-46.369027
+47.389320
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-36.83260
+37.36432
 </td>
 <td style="text-align:center;">
-18.21886
+17.45817
 </td>
 <td style="text-align:center;">
-19.046565
+21.052908
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-52.57209
+55.09127
 </td>
 <td style="text-align:center;">
-52.81657
+51.21337
 </td>
 <td style="text-align:center;">
-58.856530
+61.623097
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-51.06515
+55.33349
 </td>
 <td style="text-align:center;">
-47.07188
+48.97695
 </td>
 <td style="text-align:center;">
-43.147050
+41.801092
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-40.58419
+43.70854
 </td>
 <td style="text-align:center;">
-26.00829
+24.61855
 </td>
 <td style="text-align:center;">
-21.357607
+24.096697
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-88.18810
+81.71494
 </td>
 <td style="text-align:center;">
-76.52524
+90.83471
 </td>
 <td style="text-align:center;">
-83.650471
+86.678790
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-83.61017
+81.22720
 </td>
 <td style="text-align:center;">
-91.41364
+91.67424
 </td>
 <td style="text-align:center;">
-94.403172
+93.955672
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-42.82172
+46.24773
 </td>
 <td style="text-align:center;">
-36.19425
+35.25105
 </td>
 <td style="text-align:center;">
-36.549164
+34.968872
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-63.90452
+68.09175
 </td>
 <td style="text-align:center;">
-58.24245
+60.86876
 </td>
 <td style="text-align:center;">
-59.718615
+59.355434
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-34.79554
+36.01667
 </td>
 <td style="text-align:center;">
-24.42013
+24.55000
 </td>
 <td style="text-align:center;">
-23.532224
+22.687173
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-44.38100
+54.04882
 </td>
 <td style="text-align:center;">
-24.15377
+29.15861
 </td>
 <td style="text-align:center;">
-22.541472
+23.884958
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-87.08432
+88.32131
 </td>
 <td style="text-align:center;">
-107.96072
+105.63087
 </td>
 <td style="text-align:center;">
-113.145470
+111.618880
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-97.18882
+102.44071
 </td>
 <td style="text-align:center;">
-99.32344
+94.59562
 </td>
 <td style="text-align:center;">
-91.983993
+91.817364
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-116.59567
+121.30875
 </td>
 <td style="text-align:center;">
-130.19720
+132.14848
 </td>
 <td style="text-align:center;">
-134.541790
+132.633517
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-154.10884
+164.68973
 </td>
 <td style="text-align:center;">
-167.22727
+168.15635
 </td>
 <td style="text-align:center;">
-176.520317
+182.337179
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-57.49405
+59.63547
 </td>
 <td style="text-align:center;">
-48.19249
+47.04833
 </td>
 <td style="text-align:center;">
-45.855104
+45.535768
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-143.68031
+138.80875
 </td>
 <td style="text-align:center;">
-165.68100
+162.42735
 </td>
 <td style="text-align:center;">
-189.996788
+174.193997
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-70.06064
+81.20026
 </td>
 <td style="text-align:center;">
-96.78637
+86.26607
 </td>
 <td style="text-align:center;">
-82.096187
+88.379915
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-91.44742
+87.27468
 </td>
 <td style="text-align:center;">
-72.69525
+64.60397
 </td>
 <td style="text-align:center;">
-54.152001
+50.676523
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-151.24856
+139.21587
 </td>
 <td style="text-align:center;">
-195.20791
+190.16556
 </td>
 <td style="text-align:center;">
-216.044656
+217.281232
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-61.50638
+59.19538
 </td>
 <td style="text-align:center;">
-50.24449
+48.24917
 </td>
 <td style="text-align:center;">
-47.122722
+46.792754
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-50.48510
+54.70101
 </td>
 <td style="text-align:center;">
-44.56555
+44.08411
 </td>
 <td style="text-align:center;">
-42.521168
+43.855685
 </td>
 </tr>
 <tr>
 <td style="text-align:center;">
-51.46306
+56.20647
 </td>
 <td style="text-align:center;">
-59.10932
+58.98161
 </td>
 <td style="text-align:center;">
-60.791435
+61.237720
 </td>
 </tr>
 </tbody>
@@ -129997,7 +130021,7 @@ SL.ranger\_3\_All
     ))
 
     ## SL.ranger_1_All SL.ranger_2_All SL.ranger_3_All 
-    ##       0.7843890       0.8562903       0.8780889
+    ##       0.7784089       0.8657559       0.8794432
 
 After examine the model performance in an independent testing dataset,
 we may finally select the RF model with mtry = 7 as the best parameters.
@@ -130014,7 +130038,24 @@ Tasks:
 
 <!-- -->
 
-    #try it here
+    ranger_mtry_7 <-
+      tuningModel(basemodel  = 'SL.ranger',
+                  params = list(mtry = 7))
+
+    model_challenge2 <- predictModel(
+      Y = trainset_syd[, dependence],
+      X = trainset_syd[, independence],
+      base_model = c(ranger_mtry_7, "SL.xgboost")
+    )
+
+    ## 
+    ## 
+    ## The base models Cross validation result:
+    ## 
+    ##        SL.ranger_1_All SL.xgboost_All
+    ## weight       0.4156050      0.5843950
+    ## R2           0.8247325      0.8306841
+    ## RMSE         1.4147768      1.3839817
 
 ## 2.3 Establish base model with parallel computing
 
@@ -130065,7 +130106,7 @@ spatial (cluster) or temporal CV
     end_time <- Sys.time()
     end_time - start_time
 
-    ## Time difference of 13.83287 secs
+    ## Time difference of 14.0399 secs
 
     ## when number_cores is missing, it will indicate user to set one based on the operation system.
 
@@ -130096,9 +130137,9 @@ to the DEML by stacking meta models on it.
     ## The meta models cross validation results:
     ## 
     ##        SL.ranger_All SL.xgboost_All SL.glm_All
-    ## weight     0.1322739      0.0000000  0.8677261
-    ## R2         0.8707404      0.8490553  0.8815373
-    ## RMSE      23.3403989     25.3698735 22.3156117
+    ## weight     0.1290582      0.0000000  0.8709418
+    ## R2         0.8755974      0.8531346  0.8856880
+    ## RMSE      22.8813053     24.9436295 21.9211647
 
     #model3_stack$stack_ensemble_value
 
@@ -130115,7 +130156,7 @@ to the DEML by stacking meta models on it.
     ))
 
     ##  SL.ranger_All SL.xgboost_All     SL.glm_All                
-    ##      0.8648366      0.8537735      0.8738125      0.8738318
+    ##      0.8652920      0.8556035      0.8825480      0.8817511
 
     print(apply(
       X = cbind(model3_DEML$pre_meta$library.predict,
@@ -130126,7 +130167,7 @@ to the DEML by stacking meta models on it.
     ))
 
     ##  SL.ranger_All SL.xgboost_All     SL.glm_All                
-    ##       24.53393       25.59143       23.70075       23.69987
+    ##       24.49970       25.52245       22.87744       22.95329
 
 ## 3.1 Stacked meta models from scratch
 
@@ -130148,16 +130189,16 @@ computation time, this is not recommended.
     ## The base models Cross validation result:
     ## 
     ##        SL.xgboost_All SL.ranger_1_All SL.ranger_2_All SL.ranger_3_All
-    ## weight      0.5093405       0.0000000       0.1946900       0.2959695
-    ## R2          0.8843921       0.8020241       0.8840721       0.8842767
-    ## RMSE       22.0529810      34.4452850      22.8514683      22.3367349
+    ## weight      0.4990541       0.3383890      0.02878233       0.1337745
+    ## R2          0.8880225       0.8898957      0.88537910       0.8883282
+    ## RMSE       21.7221129      21.9017903     22.85908393      22.0179324
     ## 
     ## The meta models cross validation results:
     ## 
     ##        SL.ranger_All SL.xgboost_All SL.glm_All
-    ## weight     0.3955923     0.09226124  0.5121465
-    ## R2         0.8976871     0.88606742  0.8980186
-    ## RMSE      20.7446071    21.90717443 20.7052018
+    ## weight   0.009503538      0.0000000  0.9904965
+    ## R2       0.884810096      0.8623604  0.8976670
+    ## RMSE    22.022805870     24.1920229 20.7408156
 
 ## 3.2 Stacked meta models with paralleling computing
 
@@ -130215,12 +130256,24 @@ Tasks:
 
 <!-- -->
 
-    #try it here
+    # training the DEML model
+    model_challenging3 <- stack_ensemble(
+      object = model_challenge2,
+      Y = trainset_syd[, dependence],
+      X = trainset_syd[, independence],
+      meta_model = c("SL.ranger", "SL.xgboost"),
+      original_feature = TRUE
+    )
+
+    ## 
+    ## The meta models cross validation results:
+    ## 
+    ##        SL.ranger_All SL.xgboost_All
+    ## weight     0.4901894      0.5098106
+    ## R2         0.8327214      0.8340376
+    ## RMSE       1.3740199      1.3727787
 
 ## Challenging 4
-
-Download the Sydney NO2 data in the
-[CloudStor](https://www.aarnet.edu.au/cloudstor)
 
 Task:
 
@@ -130234,8 +130287,6 @@ structure and variable types with the training data. Using
 grid data first. And then splitting the grid data for prediction can
 always help to keep the same structure with training data.**
 
-    #try it here
-
 ## 4. Plot the results
 
 We can finally have the scatter plot using ‘assess.plot’ function in
@@ -130246,7 +130297,7 @@ deeper.
 
     print(plot_DEML$plot)
 
-![](index_files/figure-markdown_strict/unnamed-chunk-27-1.png)
+![](index_files/figure-markdown_strict/unnamed-chunk-23-1.png)
 
 ## 5. Citation
 
